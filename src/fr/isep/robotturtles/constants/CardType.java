@@ -1,4 +1,4 @@
-package constants;
+package fr.isep.robotturtles.constants;
 
 public enum CardType {
     BLUE,

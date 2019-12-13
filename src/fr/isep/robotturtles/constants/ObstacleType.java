@@ -1,4 +1,4 @@
-package constants;
+package fr.isep.robotturtles.constants;
 
 public enum ObstacleType {
     STONE_WALL,

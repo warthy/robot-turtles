@@ -1,4 +1,6 @@
-import constants.CardType;
+package fr.isep.robotturtles;
+
+import fr.isep.robotturtles.constants.CardType;
 
 public class Card {
 
