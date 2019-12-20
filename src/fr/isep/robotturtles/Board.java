@@ -1,53 +1,74 @@
 package fr.isep.robotturtles;
 
 import fr.isep.robotturtles.constants.ObstacleType;
+import fr.isep.robotturtles.constants.PawnType;
 import fr.isep.robotturtles.constants.PlayerColor;
 import fr.isep.robotturtles.tiles.JewelTile;
 import fr.isep.robotturtles.tiles.ObstacleTile;
 
-class Board {
+import java.util.List;
 
-    // [x][y]
+class Board {
+    // [y][x]
     Pawn[][] grid = new Pawn[8][8];
 
-    Board(Player[] players){
-        switch (players.length){
+    Board(List<Player> players) {
+        switch (players.size()) {
             case 2:
-                grid[0][1] = players[0];
-                grid[0][5] = players[1];
-
-                grid[grid.length-1][3] = new JewelTile(PlayerColor.GREEN);
+                players.get(0).setStartCoordinate(1);
+                players.get(1).setStartCoordinate(5);
+                grid[grid.length - 1][3] = new JewelTile(PlayerColor.GREEN);
                 break;
             case 3:
-                grid[0][0] = players[0];
-                grid[0][3] = players[1];
-                grid[0][6] = players[2];
+                players.get(0).setStartCoordinate(0);
+                players.get(1).setStartCoordinate(3);
+                players.get(2).setStartCoordinate(6);
 
-                grid[grid.length-1][0] = new JewelTile(PlayerColor.PINK);
-                grid[grid.length-1][3] = new JewelTile(PlayerColor.GREEN);
-                grid[grid.length-1][6] = new JewelTile(PlayerColor.BLUE);
+                grid[grid.length - 1][0] = new JewelTile(PlayerColor.PINK);
+                grid[grid.length - 1][3] = new JewelTile(PlayerColor.GREEN);
+                grid[grid.length - 1][6] = new JewelTile(PlayerColor.BLUE);
                 break;
             case 4:
-                grid[0][0] = players[0];
-                grid[0][2] = players[1];
-                grid[0][5] = players[2];
-                grid[0][7] = players[3];
+                players.get(0).setStartCoordinate(0);
+                players.get(1).setStartCoordinate(2);
+                players.get(2).setStartCoordinate(5);
+                players.get(3).setStartCoordinate(7);
 
-                grid[grid.length-1][1] = new JewelTile(PlayerColor.PINK);
-                grid[grid.length-1][6] = new JewelTile(PlayerColor.GREEN);
+                grid[grid.length - 1][1] = new JewelTile(PlayerColor.PINK);
+                grid[grid.length - 1][6] = new JewelTile(PlayerColor.GREEN);
                 break;
             default:
+                //TODO implement exception
                 System.out.println("[ERROR] Invalid parameter: Nombre de joueurs non autorisé");
         }
 
-        if(players.length <= 3 ){
+        // Set player on board
+        for (Player player : players) {
+            grid[0][player.getStartCoordinate()] = player;
+        }
+        if (players.size() <= 3) {
             // Add wall on right side of the board
-            for(Pawn[] lines: grid){
-                lines[lines.length-1] = new ObstacleTile(ObstacleType.STONE_WALL);
+            for (Pawn[] lines : grid) {
+                lines[lines.length - 1] = new ObstacleTile(ObstacleType.STONE_WALL);
             }
         }
     }
 
+    private boolean canPutObstacle(int x, int y, ObstacleType type) {
+        if (type.equals(ObstacleType.STONE_WALL)) {
+            return false;
+        }
+        return true;
+    }
 
-
+    public boolean set(Pawn pawn, int x, int y) {
+        if ((grid[x][y] == null) || (grid[x][y] != null && grid[x][y].getPawnType().equals(PawnType.JEWEL) && pawn.getPawnType().equals(PawnType.PLAYER)) ){
+            if((pawn instanceof ObstacleTile && !canPutObstacle(x, y, ((ObstacleTile) pawn).getType()))){
+                return false;
+            }
+            grid[x][y] = pawn;
+            return true;
+        }
+        return false;
+    }
 }
