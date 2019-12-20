@@ -94,4 +94,7 @@ public class Player implements Pawn {
     public void setOrientation(Orientation orientation) {
         this.orientation = orientation;
     }
+    public PawnType getPawnType(){
+        return PawnType.PLAYER;
+}
 }

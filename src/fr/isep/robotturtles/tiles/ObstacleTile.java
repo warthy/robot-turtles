@@ -2,6 +2,7 @@ package fr.isep.robotturtles.tiles;
 
 import fr.isep.robotturtles.Pawn;
 import fr.isep.robotturtles.constants.ObstacleType;
+import fr.isep.robotturtles.constants.PawnType;
 
 public class ObstacleTile implements Tiles, Pawn {
 
@@ -17,5 +18,9 @@ public class ObstacleTile implements Tiles, Pawn {
 
     public void setType(ObstacleType type) {
         this.type = type;
+    }
+
+    public PawnType getPawnType(){
+        return PawnType.OBSTACLE;
     }
 }
