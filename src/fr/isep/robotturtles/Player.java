@@ -1,9 +1,6 @@
 package fr.isep.robotturtles;
 
-import fr.isep.robotturtles.constants.CardType;
-import fr.isep.robotturtles.constants.ObstacleType;
-import fr.isep.robotturtles.constants.Orientation;
-import fr.isep.robotturtles.constants.PlayerColor;
+import fr.isep.robotturtles.constants.*;
 import fr.isep.robotturtles.tiles.ObstacleTile;
 
 import java.util.*;
@@ -16,6 +13,8 @@ public class Player implements Pawn {
     private List<Card> instructionsList;
     private PlayerColor color;
     private Orientation orientation;
+    // We only keep X coordinate as Y is always 0
+    private int startCoordinate;
 
     Player(PlayerColor color){
         this.color = color;
@@ -41,7 +40,6 @@ public class Player implements Pawn {
             }
         }
     }
-
 
     public Card[] getDeck() {
         return deck;
@@ -83,8 +81,8 @@ public class Player implements Pawn {
         this.color = color;
     }
 
-    public void addInstruction(Card instruction){
-
+    public void addInstruction(Card[] instructions){
+        instructionsList.addAll(Arrays.asList(instructions));
     }
 
     public Orientation getOrientation() {
@@ -94,7 +92,16 @@ public class Player implements Pawn {
     public void setOrientation(Orientation orientation) {
         this.orientation = orientation;
     }
+
+    public int getStartCoordinate() {
+        return startCoordinate;
+    }
+
+    public void setStartCoordinate(int y) {
+        this.startCoordinate =  y;
+    }
+
     public PawnType getPawnType(){
         return PawnType.PLAYER;
-}
+    }
 }
