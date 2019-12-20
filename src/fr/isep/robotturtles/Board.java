@@ -62,10 +62,10 @@ class Board {
     }
 
     public boolean set(Pawn pawn, int x, int y) {
-        if ((grid[x][y] == null) || (grid[x][y] != null && grid[x][y].getPawnType().equals(PawnType.JEWEL) && pawn.getPawnType().equals(PawnType.PLAYER)) ){
-            if((pawn instanceof ObstacleTile && !canPutObstacle(x, y, ((ObstacleTile) pawn).getType()))){
-                return false;
-            }
+        if ((grid[x][y] == null)
+                || (grid[x][y] != null && grid[x][y].getPawnType().equals(PawnType.JEWEL) && pawn.getPawnType().equals(PawnType.PLAYER))
+                || (pawn instanceof ObstacleTile && canPutObstacle(x, y, ((ObstacleTile) pawn).getType()))
+        ){
             grid[x][y] = pawn;
             return true;
         }
