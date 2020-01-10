@@ -44,13 +44,10 @@ public class MenuController {
         Stage stage = (Stage)window;
 
         GameController.initGame(Integer.parseInt(counter.getText()));
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../resources/scenes/Game.fxml"));
-        Scene gameScene = new Scene(loader.load());
-
-        GameController gameController = loader.getController();
-        System.out.println(gameController);
+        Parent root = FXMLLoader.load(getClass().getResource("../resources/scenes/Game.fxml"));
+        Scene gameScene = new Scene(root);
 
         stage.setScene(gameScene);
-
+        stage.setFullScreen(true);
     }
 }
