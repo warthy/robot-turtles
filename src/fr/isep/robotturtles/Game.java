@@ -8,6 +8,7 @@ import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -32,21 +33,17 @@ public class Game  extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Hello World");
-        Group root = new Group();
-        Scene scene = new Scene(root, 300, 250, Color.LIGHTGREEN);
-        Image bg = new Image("robot-turtles-menu.png");
-        ImageView iv1 = new ImageView();
-        iv1.setImage(bg);
-        iv1.setFitWidth(100);
-        iv1.setPreserveRatio(true);
-        iv1.setSmooth(true);
-        iv1.setCache(true);
-        root.getChildren().add(iv1);
+
+        StackPane root = new StackPane();
+        root.setId("pane");
+        Scene scene = new Scene(root, 300, 250);
+        scene.getStylesheets().addAll(Game.class.getResource("style.css").toExternalForm());
+        primaryStage.setScene(scene);
+        primaryStage.show();
 
         Button play = new Button("Jouer");
-        play.setLayoutX(0);
-        play.setLayoutY(0);
+        play.setLayoutX(50);
+        play.setLayoutY(50);
         play.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 play.setText("Cliqué !");
