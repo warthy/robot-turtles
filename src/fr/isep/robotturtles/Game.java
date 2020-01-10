@@ -8,6 +8,8 @@ import javafx.scene.*;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -33,32 +35,36 @@ public class Game  extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        StackPane root = new StackPane();
-        root.setId("pane");
-        Scene scene = new Scene(root, 300, 250);
-        scene.getStylesheets().addAll(Game.class.getResource("resources/css/style.css").toExternalForm());
 
-        Button play = new Button("Start");
-        play.setLayoutX(0);
-        play.setLayoutY(0);
+        AnchorPane root = new AnchorPane();
+        root.setId("anpane");
+        Scene scene = new Scene(root, 600, 500);
+        scene.getStylesheets().addAll(Game.class.getResource("style.css").toExternalForm());
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+        Button play = new Button("Jouer");
+        play.setLayoutX(200);
+        play.setLayoutY(100);
         play.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 play.setText("Cliqué !");
             }
         });
+        root.getChildren().add(play);
 
-        Button exit = new Button("Quitter");
-        exit.setLayoutX(100);
-        exit.setLayoutY(100);
-        exit.setOnAction(new EventHandler<ActionEvent>() {
+        Button leave = new Button("Quitter");
+        leave.setLayoutX(300);
+        leave.setLayoutY(100);
+        leave.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 primaryStage.close();
                 System.exit(0);
             }
         });
+        root.getChildren().add(leave);
+        
 
-        root.getChildren().add(play);
-        root.getChildren().add(exit);
         primaryStage.setScene(scene);
         primaryStage.getIcons().add(new Image(Game.class.getResourceAsStream("resources/images/logo.png")));
         primaryStage.show();
