@@ -1,7 +1,16 @@
-#pane{
+#menu{
     -fx-background-image: url("../images/background-menu.jpg");
     -fx-background-repeat: stretch;
     -fx-background-size: 1920 1080;
     -fx-background-position: center center;
-    -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
+    -fx-padding: 50;
+    -fx-spacing: 20;
+}
+
+.menu-button {
+    -fx-background-color: #8BC53F;
+    -fx-background-radius: 0;
+    -fx-text-fill: #fff;
+    -fx-padding: 10;
+    -fx-font-weight: bold;
 }

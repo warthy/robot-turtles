@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox id="menu" alignment="BASELINE_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="519.0" prefWidth="759.0" stylesheets="@resources/css/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.isep.robotturtles.controller.MenuController">
+    <children>
+        <ImageView fitHeight="158.0" fitWidth="602.0" pickOnBounds="true" preserveRatio="true">
+           <image>
+               <Image url="@resources/images/menu-title.png" />
+           </image>
+        </ImageView>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <children>
+                <Button mnemonicParsing="false" prefHeight="37.0" prefWidth="33.0" styleClass="menu-button" text="&lt;" textAlignment="CENTER">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+                <Text fill="#8bc53f" stroke="#006838" strokeType="OUTSIDE" strokeWidth="2.0" text="4" textAlignment="CENTER" wrappingWidth="35.255859375">
+                    <font>
+                        <Font name="System Bold" size="30.0" />
+                    </font>
+                    <HBox.margin>
+                        <Insets left="20.0" right="20.0" top="20.0" />
+                    </HBox.margin>
+                </Text>
+                <Button mnemonicParsing="false" prefHeight="37.0" prefWidth="33.0" styleClass="menu-button" text="&gt;" textAlignment="CENTER">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            </children>
+        </HBox>
+        <Button mnemonicParsing="false" styleClass="menu-button" text="Start">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="menu-button" text="Quitter">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
+    </children>
+</VBox>
