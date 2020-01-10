@@ -9,10 +9,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class Game extends Application {
+public class Main extends Application {
 
     public static void main(String[] args){
-        Application.launch(Game.class, args);
+        Application.launch(Main.class, args);
     }
 
     @Override
@@ -22,7 +22,7 @@ public class Game extends Application {
 
         primaryStage.setOnHidden(e -> System.exit(0));
         primaryStage.setScene(scene);
-        primaryStage.getIcons().add(new Image(Game.class.getResourceAsStream("resources/images/logo.png")));
+        primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("resources/images/logo.png")));
         primaryStage.setFullScreen(true);
         primaryStage.show();
     }

@@ -9,7 +9,7 @@ import fr.isep.robotturtles.tiles.ObstacleTile;
 import java.util.List;
 
 public class Board {
-    // [y][x]
+    // [x][y]
     Pawn[][] grid = new Pawn[8][8];
     Player[] players;
 
@@ -77,5 +77,9 @@ public class Board {
             return true;
         }
         return false;
+    }
+
+    public Pawn[][] getGrid(){
+        return grid;
     }
 }

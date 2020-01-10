@@ -1,6 +1,5 @@
 package fr.isep.robotturtles.controller;
 
-import fr.isep.robotturtles.Game;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
