@@ -43,6 +43,7 @@ public class MenuController {
         Window window = menu.getWindow();
         Stage stage = (Stage)window;
 
+        GameController.initGame(Integer.parseInt(counter.getText()));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../resources/scenes/Game.fxml"));
         Scene gameScene = new Scene(loader.load());
 

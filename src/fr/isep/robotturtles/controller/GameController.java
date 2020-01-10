@@ -9,12 +9,13 @@ import java.util.List;
 
 public class GameController {
     static List<Player> players = new ArrayList<>();
-    private Board board;
+    static Board board;
 
-    void initialize() {}
-
-    void initGame(int playerSize) {
-
+    static void initGame(int playerSize) {
+        for(int i=0; i < playerSize; i++){
+            players.add(new Player(PlayerColor.values()[i]));
+        }
+        board = new Board(players);
     }
 
 }
