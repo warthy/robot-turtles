@@ -14,3 +14,9 @@
     -fx-padding: 10;
     -fx-font-weight: bold;
 }
+
+#board{
+    -fx-border-color: #000;
+    -fx-border-width: 3 ;
+    -fx-grid-lines-visible: true;
+}
