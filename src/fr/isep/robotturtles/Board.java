@@ -11,8 +11,11 @@ import java.util.List;
 class Board {
     // [y][x]
     Pawn[][] grid = new Pawn[8][8];
+    Player[] players;
 
     Board(List<Player> players) {
+        this.players = players.toArray(new Player[0]);
+
         switch (players.size()) {
             case 2:
                 players.get(0).setStartCoordinate(1);
@@ -56,6 +59,10 @@ class Board {
 
     private boolean canPutObstacle(int x, int y, ObstacleType type) {
         if (type.equals(ObstacleType.STONE_WALL)) {
+            // Check if player can access at least one gem
+            for(Player player: players){
+
+            }
             return false;
         }
         return true;
