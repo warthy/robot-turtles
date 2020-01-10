@@ -32,7 +32,7 @@ public class Game  extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Hello Tristan");
+        primaryStage.setTitle("Hello World");
         Group root = new Group();
         Scene scene = new Scene(root, 300, 250, Color.LIGHTGREEN);
         Image bg = new Image("robot-turtles-menu.png");
