@@ -15,6 +15,14 @@
     -fx-font-weight: bold;
 }
 
+#game{
+    -fx-background-image: url("../images/robot-turtles-game.jpg");
+    -fx-background-repeat: stretch;
+    -fx-background-size: 1920 1080;
+    -fx-background-position: center center;
+
+}
+
 #board{
     -fx-border-color: #000;
     -fx-border-width: 3 ;
