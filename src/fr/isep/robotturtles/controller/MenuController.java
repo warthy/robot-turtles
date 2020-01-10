@@ -12,4 +12,15 @@ public class MenuController {
         int count = Integer.parseInt(counter.getText()) + 1;
         counter.setText(Integer.toString(count));
     }
+
+    @FXML
+    public void decrease(Event e){
+        int count = Integer.parseInt(counter.getText()) - 1;
+        counter.setText(Integer.toString(count));
+    }
+
+    @FXML
+    public void quit(Event e){
+        System.exit(0);
+    }
 }
