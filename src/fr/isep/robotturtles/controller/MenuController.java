@@ -42,8 +42,14 @@ public class MenuController {
         Scene menu = counter.getScene();
         Window window = menu.getWindow();
         Stage stage = (Stage)window;
-        Parent root = FXMLLoader.load(Game.class.getResource("Game.fxml"));
-        Scene scene = new Scene(root, 600, 500);
-        stage.setScene(scene);
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../resources/scenes/Game.fxml"));
+        Scene gameScene = new Scene(loader.load());
+
+        GameController gameController = loader.getController();
+        System.out.println(gameController);
+
+        stage.setScene(gameScene);
+
     }
 }

@@ -8,13 +8,13 @@
 <?import javafx.scene.layout.*?>
 
 <VBox id="menu" alignment="BASELINE_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-      minWidth="-Infinity" prefHeight="519.0" prefWidth="759.0" stylesheets="@resources/css/style.css"
+      minWidth="-Infinity" prefHeight="519.0" prefWidth="759.0" stylesheets="@../css/style.css"
       xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="fr.isep.robotturtles.controller.MenuController">
     <children>
         <ImageView fitHeight="158.0" fitWidth="602.0" pickOnBounds="true" preserveRatio="true">
             <image>
-                <Image url="@resources/images/menu-title.png"/>
+                <Image url="@../images/menu-title.png"/>
             </image>
         </ImageView>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">

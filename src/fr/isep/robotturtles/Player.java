@@ -16,7 +16,7 @@ public class Player implements Pawn {
     // We only keep X coordinate as Y is always 0
     private int startCoordinate;
 
-    Player(PlayerColor color){
+    public Player(PlayerColor color){
         this.color = color;
         generatePlayer();
     }

@@ -8,12 +8,12 @@ import fr.isep.robotturtles.tiles.ObstacleTile;
 
 import java.util.List;
 
-class Board {
+public class Board {
     // [y][x]
     Pawn[][] grid = new Pawn[8][8];
     Player[] players;
 
-    Board(List<Player> players) {
+    public Board(List<Player> players) {
         this.players = players.toArray(new Player[0]);
 
         switch (players.size()) {
