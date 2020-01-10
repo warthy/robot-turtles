@@ -33,7 +33,7 @@ public class Game extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("Menu.fxml"));
         Scene scene = new Scene(root, 600, 500);
         scene.getStylesheets().addAll(Game.class.getResource("resources/css/style.css").toExternalForm());
-        
+
         primaryStage.setOnHidden(e -> System.exit(0));
         primaryStage.setScene(scene);
         primaryStage.getIcons().add(new Image(Game.class.getResourceAsStream("resources/images/logo.png")));
