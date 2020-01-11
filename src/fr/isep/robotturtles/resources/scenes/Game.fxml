@@ -65,7 +65,7 @@
         </VBox>
         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
          <children>
-            <GridPane>
+            <GridPane fx:id="deck">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -83,7 +83,7 @@
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" />
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" />
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" />
-                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="5" />
+                  <VBox fx:id="obstacleDeck" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="5" />
                </children>
             </GridPane>
          </children></HBox>

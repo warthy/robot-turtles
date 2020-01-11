@@ -10,4 +10,8 @@ public class Card {
         this.type = type;
     }
 
+    public CardType getType(){
+        return type;
+    }
+
 }

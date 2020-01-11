@@ -29,8 +29,12 @@ public class Player implements Pawn {
         stack.addAll(Collections.nCopies(3, new Card(CardType.LASER)));
         Collections.shuffle(stack);
 
-        Arrays.fill(obstacleDeck, 0, 2, new ObstacleTile(ObstacleType.STONE));
-        Arrays.fill(obstacleDeck, 3, 4, new ObstacleTile(ObstacleType.ICE));
+        Arrays.fill(obstacleDeck, 0, 3, new ObstacleTile(ObstacleType.STONE));
+        Arrays.fill(obstacleDeck, 3, 5, new ObstacleTile(ObstacleType.ICE));
+
+        for(int i =0; i<5;i++){
+            deck[i] = stack.remove();
+        }
     }
 
     void draw(){
