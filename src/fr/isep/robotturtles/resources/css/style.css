@@ -28,3 +28,33 @@
     -fx-border-width: 3 ;
     -fx-grid-lines-visible: true;
 }
+
+.pawn {
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: contain;
+    -fx-background-position: center center;
+}
+
+.jewel{
+    -fx-background-image: url("../images/jewel.png");
+}
+.obstacle-ice{
+    -fx-background-image: url("../images/ice.png");
+}
+.obstacle-wall{
+    -fx-background-image: url("../images/wall.png");
+}
+
+#turtle-blue{
+    -fx-background-image: url("../images/turtle-blue.png");
+}
+#turtle-orange{
+    -fx-background-image: url("../images/turtle-orange.png");
+}
+#turtle-purple{
+    -fx-background-image: url("../images/turtle-purple.png");
+}
+#turtle-red{
+    -fx-background-image: url("../images/turtle-red.png");
+}
+

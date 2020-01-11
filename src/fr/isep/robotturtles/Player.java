@@ -29,8 +29,8 @@ public class Player implements Pawn {
         stack.addAll(Collections.nCopies(3, new Card(CardType.LASER)));
         Collections.shuffle(stack);
 
-        Arrays.fill(obstacleDeck, 0, 2, new ObstacleTile(ObstacleType.STONE_WALL));
-        Arrays.fill(obstacleDeck, 3, 4, new ObstacleTile(ObstacleType.ICE_WALL));
+        Arrays.fill(obstacleDeck, 0, 2, new ObstacleTile(ObstacleType.STONE));
+        Arrays.fill(obstacleDeck, 3, 4, new ObstacleTile(ObstacleType.ICE));
     }
 
     void draw(){
