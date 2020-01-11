@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
@@ -62,6 +63,15 @@
                   <Cursor fx:constant="WAIT" />
                </cursor>
             </Button>
+            <AnchorPane prefHeight="127.0" prefWidth="120.0">
+               <styleClass>
+                  <String fx:value="pawn" />
+                  <String fx:value="draw" />
+               </styleClass>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </AnchorPane>
             </children>
         </VBox>
       <GridPane GridPane.rowIndex="1">
