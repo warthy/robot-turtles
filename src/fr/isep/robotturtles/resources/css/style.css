@@ -37,7 +37,7 @@
     -fx-grid-lines-visible: true;
 }
 
-.pawn {
+.pawn, .card {
     -fx-background-repeat: no-repeat;
     -fx-background-size: contain;
     -fx-background-position: center center;
@@ -46,11 +46,25 @@
 .jewel{
     -fx-background-image: url("../images/jewel.png");
 }
+
 .obstacle-ice{
-    -fx-background-image: url("../images/block-ice.png");
+    -fx-background-image: url("../images/wall-ice.png");
 }
 .obstacle-stone{
-    -fx-background-image: url("../images/block-wall.png");
+    -fx-background-image: url("../images/wall-stone.png");
+}
+
+.card-yellow{
+    -fx-background-image: url("../images/card-yellow.png");
+}
+.card-blue{
+    -fx-background-image: url("../images/card-blue.png");
+}
+.card-purple{
+    -fx-background-image: url("../images/card-purple.png");
+}
+.card-laser{
+    -fx-background-image: url("../images/card-laser.png");
 }
 
 #turtle-blue{
