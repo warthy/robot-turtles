@@ -41,4 +41,8 @@ public class Turn {
     public void setHasWithdrawn(boolean hasWithdrawn) {
         this.hasWithdrawn = hasWithdrawn;
     }
+
+    public Player getPlayer(){
+        return player;
+    }
 }

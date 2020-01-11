@@ -54,7 +54,7 @@
                      </cursor></Button>
                     </children>
                 </HBox>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tour : " />
+            <Text fx:id="labelTurn" strokeType="OUTSIDE" strokeWidth="0.0" text="Tour: Tortue BLUE" />
             <Button alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" styleClass="game-button" text="Fin du Tour">
                <cursor>
                   <Cursor fx:constant="WAIT" />

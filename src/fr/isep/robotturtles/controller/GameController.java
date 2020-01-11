@@ -6,14 +6,19 @@ import fr.isep.robotturtles.Player;
 import fr.isep.robotturtles.Turn;
 import fr.isep.robotturtles.constants.PlayerColor;
 import fr.isep.robotturtles.tiles.ObstacleTile;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
@@ -26,9 +31,10 @@ import java.util.ResourceBundle;
 public class GameController implements Initializable {
     static List<Player> players;
     static Board board;
-    Turn turn;
+    private Turn turn;
     public GridPane grid = null;
-
+    public Button passTurn = null;
+    public Text labelTurn = null;
 
     static void initGame(int playerSize) {
         players = new ArrayList<>();
@@ -65,25 +71,39 @@ public class GameController implements Initializable {
     @FXML
     public void nextTurn(Event e){
         if(turn.next()){
+            labelTurn.setText("Tour: tortue " + turn.getPlayer().getColor().name());
             System.out.println("update layout");
         }
     }
 
     @FXML
     public void executeProgram(Event e){
-        turn.setHasPlayed(true);
+        //TODO: launch program
+        hasPlay();
     }
 
     @FXML
     public void completeProgram(Event e){
-        turn.setHasPlayed(true);
+        //TODO: complete program
+        hasPlay();
     }
 
     @FXML
     public void buildWall(Event e){
-        turn.setHasPlayed(true);
+        //TODO: build wall
+       hasPlay();
     }
 
+
+    private void hasPlay(){
+        turn.setHasPlayed(true);
+        passTurn.setCursor(Cursor.HAND);
+        passTurn.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                nextTurn(event);
+            }
+        });
+    }
 
     private void renderBoard(){
         //Clear grid by removing all children
