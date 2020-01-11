@@ -82,4 +82,9 @@ public class GameController implements Initializable {
         stage.setFullScreen(true);
     }
 
+    @FXML
+    public void quit(Event e){
+        System.exit(0);
+    }
+
 }
