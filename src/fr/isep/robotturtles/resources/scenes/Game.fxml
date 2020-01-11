@@ -63,15 +63,16 @@
                   <Cursor fx:constant="WAIT" />
                </cursor>
             </Button>
-            <AnchorPane prefHeight="127.0" prefWidth="120.0">
-               <styleClass>
-                  <String fx:value="pawn" />
-                  <String fx:value="draw" />
-               </styleClass>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </AnchorPane>
+            <VBox prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Pane prefHeight="200.0" prefWidth="200.0">
+                     <styleClass>
+                        <String fx:value="draw" />
+                        <String fx:value="pawn" />
+                     </styleClass>
+                  </Pane>
+               </children>
+            </VBox>
             </children>
         </VBox>
       <GridPane GridPane.rowIndex="1">
