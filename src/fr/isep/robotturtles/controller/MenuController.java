@@ -37,7 +37,7 @@ public class MenuController {
     }
 
     @FXML
-    public void start(Event e) throws IOException {
+    public void startGame(Event e) throws IOException {
         Scene menu = counter.getScene();
         Window window = menu.getWindow();
         Stage stage = (Stage)window;

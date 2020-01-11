@@ -41,7 +41,7 @@
 .obstacle-ice{
     -fx-background-image: url("../images/ice.png");
 }
-.obstacle-wall{
+.obstacle-stone{
     -fx-background-image: url("../images/wall.png");
 }
 

@@ -42,7 +42,7 @@
                 </Button>
             </children>
         </HBox>
-        <Button mnemonicParsing="false" styleClass="menu-button" text="Start" onAction="#start">
+        <Button mnemonicParsing="false" styleClass="menu-button" text="Start" onAction="#startGame">
             <cursor>
                 <Cursor fx:constant="HAND"/>
             </cursor>
