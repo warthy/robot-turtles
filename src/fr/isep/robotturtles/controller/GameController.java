@@ -3,6 +3,7 @@ package fr.isep.robotturtles.controller;
 import fr.isep.robotturtles.Board;
 import fr.isep.robotturtles.Pawn;
 import fr.isep.robotturtles.Player;
+import fr.isep.robotturtles.Turn;
 import fr.isep.robotturtles.constants.PlayerColor;
 import fr.isep.robotturtles.tiles.ObstacleTile;
 import javafx.event.Event;
@@ -25,6 +26,7 @@ import java.util.ResourceBundle;
 public class GameController implements Initializable {
     static List<Player> players;
     static Board board;
+    Turn turn;
     public GridPane grid = null;
 
 
@@ -38,6 +40,52 @@ public class GameController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        renderBoard();
+        turn = new Turn(players);
+    }
+
+    @FXML
+    public void leaveGame(Event e) throws IOException {
+        Scene menu = grid.getScene();
+        Window window = menu.getWindow();
+        Stage stage = (Stage)window;
+
+        Parent root = FXMLLoader.load(getClass().getResource("../resources/scenes/Menu.fxml"));
+        Scene menuScene = new Scene(root);
+
+        stage.setScene(menuScene);
+        stage.setFullScreen(true);
+    }
+
+    @FXML
+    public void quit(Event e){
+        System.out.println("quit");
+    }
+
+    @FXML
+    public void nextTurn(Event e){
+        if(turn.next()){
+            System.out.println("update layout");
+        }
+    }
+
+    @FXML
+    public void executeProgram(Event e){
+        turn.setHasPlayed(true);
+    }
+
+    @FXML
+    public void completeProgram(Event e){
+        turn.setHasPlayed(true);
+    }
+
+    @FXML
+    public void buildWall(Event e){
+        turn.setHasPlayed(true);
+    }
+
+
+    private void renderBoard(){
         //Clear grid by removing all children
         grid.getChildren().clear();
         int row = 0;
@@ -67,24 +115,6 @@ public class GameController implements Initializable {
             }
             row++;
         }
-    }
-
-    @FXML
-    public void leaveGame(Event e) throws IOException {
-        Scene menu = grid.getScene();
-        Window window = menu.getWindow();
-        Stage stage = (Stage)window;
-
-        Parent root = FXMLLoader.load(getClass().getResource("../resources/scenes/Menu.fxml"));
-        Scene menuScene = new Scene(root);
-
-        stage.setScene(menuScene);
-        stage.setFullScreen(true);
-    }
-
-    @FXML
-    public void quit(Event e){
-        System.exit(0);
     }
 
 }
