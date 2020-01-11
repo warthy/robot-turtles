@@ -80,3 +80,7 @@
     -fx-background-image: url("../images/turtle-red.png");
 }
 
+.draw{
+    -fx-background-image: url("../images/stack-card.png");
+}
+
