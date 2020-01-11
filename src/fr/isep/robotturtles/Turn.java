@@ -6,7 +6,7 @@ import java.util.List;
 public class Turn {
     private LinkedList<Player> players;
     private Player player;
-    private boolean hasPlayed = false;
+    private boolean hasPlayed = true;
     private boolean hasWithdrawn = false;
 
     public Turn(List<Player> players){
