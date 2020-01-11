@@ -37,7 +37,7 @@
     -fx-grid-lines-visible: true;
 }
 
-.pawn {
+.pawn, .card {
     -fx-background-repeat: no-repeat;
     -fx-background-size: contain;
     -fx-background-position: center center;

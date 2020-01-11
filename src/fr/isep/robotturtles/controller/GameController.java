@@ -15,7 +15,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -111,11 +110,10 @@ public class GameController implements Initializable {
 
     private void setUpDeck() {
         //Change deck with next player's deck
-        deck.getChildren().clear();
-        obstacleDeck.getChildren().clear();
         AnchorPane pane;
 
         int col = 0;
+        deck.getChildren().removeIf(node ->  !(node instanceof GridPane));
         for (Card card : turn.getPlayer().getDeck()) {
             pane = new AnchorPane();
             pane.getStyleClass().addAll("card", "card-" + card.getType().name().toLowerCase());
@@ -123,15 +121,18 @@ public class GameController implements Initializable {
             col++;
         }
 
-        ObstacleTile[] obstacles = turn.getPlayer().getObstacleDeck();
-        for (col = 0; col < 3; col++) {
-            for (int row = 0; col < 3; col++) {
-                pane = new AnchorPane();
-                pane.getStyleClass().addAll("pawn", "obstacle-" + obstacles[row+col].getType().name().toLowerCase());
-                obstacleDeck.add(pane, col, row);
-            }
+        int row = col = 0;
+        obstacleDeck.getChildren().clear();
+        for (ObstacleTile obstacle : turn.getPlayer().getObstacleDeck()) {
+            pane = new AnchorPane();
+            pane.getStyleClass().addAll("pawn", "obstacle-" + obstacle.getType().name().toLowerCase());
+            obstacleDeck.add(pane, col, row);
+
+            row = col == 1 ? row + 1 : row;
+            col = col == 1 ? 0 : col + 1;
         }
     }
+
 
     private void renderBoard() {
         //Clear grid by removing all children
