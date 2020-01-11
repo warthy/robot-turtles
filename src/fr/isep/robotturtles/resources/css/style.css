@@ -22,6 +22,15 @@
     -fx-background-position: center center;
 }
 
+.game-button {
+    -fx-background-color: #8BC53F;
+    -fx-background-radius: 0;
+    -fx-text-fill: #fff;
+    -fx-font-size: 9;
+    -fx-padding: 10;
+    -fx-font-weight: bold;
+}
+
 #board{
     -fx-border-color: #000;
     -fx-border-width: 3 ;
