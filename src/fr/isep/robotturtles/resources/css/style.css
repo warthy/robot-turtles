@@ -38,10 +38,10 @@
     -fx-background-image: url("../images/jewel.png");
 }
 .obstacle-ice{
-    -fx-background-image: url("../images/ice.png");
+    -fx-background-image: url("../images/block-ice.png");
 }
 .obstacle-stone{
-    -fx-background-image: url("../images/wall.png");
+    -fx-background-image: url("../images/block-wall.png");
 }
 
 #turtle-blue{
