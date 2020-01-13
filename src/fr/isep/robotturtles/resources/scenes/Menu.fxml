@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.image.*?>
@@ -7,51 +8,77 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox id="menu" alignment="BASELINE_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-      minWidth="-Infinity" prefHeight="519.0" prefWidth="759.0" stylesheets="@../css/style.css"
-      xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="fr.isep.robotturtles.controller.MenuController">
-    <children>
-        <ImageView fitHeight="158.0" fitWidth="602.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../images/menu-title.png"/>
-            </image>
-        </ImageView>
-        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-            <children>
-                <Button mnemonicParsing="false" prefHeight="37.0" prefWidth="33.0" styleClass="menu-button" text="&lt;"
-                        textAlignment="CENTER" onAction="#decrease">
-                    <cursor>
-                        <Cursor fx:constant="HAND"/>
-                    </cursor>
-                </Button>
-                <Text fx:id="counter" fill="#8bc53f" stroke="#006838" strokeType="OUTSIDE" strokeWidth="2.0" text="3"
-                      textAlignment="CENTER" wrappingWidth="35.255859375">
-                    <font>
-                        <Font name="System Bold" size="30.0"/>
-                    </font>
-                    <HBox.margin>
-                        <Insets left="20.0" right="20.0" top="20.0"/>
-                    </HBox.margin>
-                </Text>
-                <Button mnemonicParsing="false" prefHeight="37.0" prefWidth="33.0" styleClass="menu-button" text="&gt;"
-                        textAlignment="CENTER" onAction="#increase">
-                    <cursor>
-                        <Cursor fx:constant="HAND"/>
-                    </cursor>
-                </Button>
-            </children>
-        </HBox>
-        <Button mnemonicParsing="false" styleClass="menu-button" text="Start" onAction="#startGame">
-            <cursor>
-                <Cursor fx:constant="HAND"/>
-            </cursor>
-        </Button>
-        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="menu-button"
-                text="Quitter" onAction="#quit">
-            <cursor>
-                <Cursor fx:constant="HAND"/>
-            </cursor>
-        </Button>
-    </children>
-</VBox>
+<GridPane id="menu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.isep.robotturtles.controller.MenuController">
+   <children>
+      <Pane prefHeight="400.0" prefWidth="400.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets bottom="20.0" top="20.0" />
+         </padding>
+         <styleClass>
+            <String fx:value="pawn" />
+            <String fx:value="logo" />
+         </styleClass>
+      </Pane>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <children>
+            <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="80.0" styleClass="menu-button" text="&lt;" textAlignment="CENTER" onAction="#decrease">
+               <HBox.margin>
+                  <Insets bottom="20.0" left="150.0" right="20.0" top="20.0" />
+               </HBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Text fx:id="counter" fill="#8bc53f" stroke="#006838" strokeType="OUTSIDE" strokeWidth="2.0" text="3" textAlignment="CENTER" wrappingWidth="35.255859375">
+               <font>
+                  <Font name="System Bold" size="30.0" />
+               </font>
+            </Text>
+            <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="80.0" styleClass="menu-button" text="&gt;" textAlignment="CENTER" onAction="#increase">
+               <HBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="150.0" top="20.0" />
+               </HBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+         </children>
+      </HBox>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <children>
+            <Button mnemonicParsing="false" prefHeight="90.0" prefWidth="400.0" styleClass="game-button" text="Start" textAlignment="CENTER" onAction="#startGame">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="100.0" right="100.0" />
+               </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="80.0" prefWidth="100.0" styleClass="game-button" text="Quitter" textAlignment="CENTER" onAction="#quit">
+               <VBox.margin>
+                  <Insets left="150.0" right="150.0" top="10.0" />
+               </VBox.margin>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+         </children>
+         <padding>
+            <Insets bottom="20.0" top="20.0" />
+         </padding>
+      </VBox>
+   </children>
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" percentWidth="15.0" prefWidth="106.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="420.0" minWidth="10.0" percentWidth="70.0" prefWidth="408.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="145.0" minWidth="10.0" percentWidth="15.0" prefWidth="80.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" percentHeight="40.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" percentHeight="20.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" percentHeight="40.0" prefHeight="30.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+</GridPane>
