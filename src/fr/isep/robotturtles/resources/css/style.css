@@ -90,7 +90,7 @@
     -fx-background-image: url("../images/turtle-red.png");
 }
 
-.draw{
+.stack{
     -fx-background-image: url("../images/stack-card.png");
 }
 

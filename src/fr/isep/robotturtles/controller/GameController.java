@@ -18,6 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -42,7 +43,8 @@ public class GameController implements Initializable {
     public Text labelTurn = null;
     public GridPane deck = null;
     public GridPane obstacleDeck = null;
-    public Pane stack;
+    public HBox programStack = null;
+    public Pane stack = null;
 
     static void initGame(int playerSize) {
         players = new ArrayList<>();
@@ -59,6 +61,7 @@ public class GameController implements Initializable {
         labelTurn.setText("Tour: tortue " + turn.getPlayer().getColor().name());
         displayDeck();
         displayObstacleDeck();
+        displayProgramStack();
     }
 
 
@@ -68,6 +71,7 @@ public class GameController implements Initializable {
             labelTurn.setText("Tour: tortue " + turn.getPlayer().getColor().name());
             displayDeck();
             displayObstacleDeck();
+            displayProgramStack();
         }
     }
 
@@ -140,6 +144,13 @@ public class GameController implements Initializable {
             return true;
         } else {
             return false;
+        }
+    }
+
+    private void displayProgramStack(){
+        programStack.getStyleClass().remove("stack");
+        if(turn.getPlayer().getInstructionsList().size() > 0){
+            programStack.getStyleClass().add("stack");
         }
     }
 
