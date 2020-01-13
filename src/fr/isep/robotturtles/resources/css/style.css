@@ -37,6 +37,12 @@
     -fx-grid-lines-visible: true;
 }
 
+#labelTurn{
+    -fx-font-weight: bold;
+    -fx-font-size: 20;
+    -fx-fill: #fff;
+}
+
 .hover-allowed {
     -fx-border-color: #00ff00;
     -fx-border-width: 2;
@@ -46,6 +52,7 @@
     -fx-border-color: #ff0000;
     -fx-border-width: 2;
 }
+
 
 .pawn, .card {
     -fx-background-repeat: no-repeat;
@@ -93,4 +100,5 @@
 .stack{
     -fx-background-image: url("../images/stack-card.png");
 }
+
 

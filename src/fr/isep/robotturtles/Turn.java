@@ -31,8 +31,8 @@ public class Turn {
         return hasPlayed;
     }
 
-    public void setHasPlayed(boolean hasPlayed) {
-        this.hasPlayed = hasPlayed;
+    public void setHasPlayed() {
+        this.hasPlayed = true;
     }
 
     public boolean hasWithdrawn() {
@@ -51,7 +51,8 @@ public class Turn {
         return hasDraw;
     }
 
-    public void setHasDraw(boolean hasDraw) {
-        this.hasDraw = hasDraw;
+    public void setHasDraw() {
+        player.draw();
+        this.hasDraw = true;
     }
 }

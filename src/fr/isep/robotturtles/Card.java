@@ -6,7 +6,7 @@ public class Card {
 
     CardType type;
 
-    Card(CardType type){
+    public Card(CardType type){
         this.type = type;
     }
 

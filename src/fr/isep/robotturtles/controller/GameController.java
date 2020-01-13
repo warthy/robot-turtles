@@ -1,6 +1,7 @@
 package fr.isep.robotturtles.controller;
 
 import fr.isep.robotturtles.*;
+import fr.isep.robotturtles.constants.CardType;
 import fr.isep.robotturtles.constants.ObstacleType;
 import fr.isep.robotturtles.constants.PlayerColor;
 import fr.isep.robotturtles.tiles.ObstacleTile;
@@ -69,6 +70,7 @@ public class GameController implements Initializable {
     public void nextTurn(Event e) {
         if (turn.next()) {
             labelTurn.setText("Tour: tortue " + turn.getPlayer().getColor().name());
+
             displayDeck();
             displayObstacleDeck();
             displayProgramStack();
@@ -77,9 +79,11 @@ public class GameController implements Initializable {
 
     @FXML
     public void drawCard(Event e) {
-        if (turn.hasPlayed()) {
-            turn.getPlayer().draw();
-            turn.next();
+        if (turn.hasPlayed() && !turn.hasDraw()) {
+            turn.setHasDraw();
+
+            stack.setCursor(Cursor.DEFAULT);
+            displayDeck();
         }
     }
 
@@ -90,7 +94,6 @@ public class GameController implements Initializable {
         }
     }
 
-
     @FXML
     public void executeProgram(Event e) {
         //TODO: launch program
@@ -98,11 +101,31 @@ public class GameController implements Initializable {
     }
 
     @FXML
-    public void completeProgram(Event e) {
-        //TODO: complete program
-        hasPlay(true);
+    public void completeProgram(DragEvent e) {
+        Dragboard db = e.getDragboard();
+        boolean success = false;
+        String[] data = db.getString().split(";");
+        if (data[0].equals("CARD")) {
+            turn.getPlayer().getDeck()[Integer.parseInt(data[1])] = null;
+            turn.getPlayer().getInstructionsList().add(new Card(CardType.valueOf(data[2])));
+
+            displayProgramStack();
+            hasPlay(true);
+            success = true;
+        }
+        e.setDropCompleted(success);
+        e.consume();
     }
 
+    @FXML
+    public void allowCardDrag(DragEvent e) {
+        Dragboard db = e.getDragboard();
+        String[] data = db.getString().split(";");
+        if (data[0].equals("CARD")) {
+            e.acceptTransferModes(TransferMode.MOVE);
+        }
+        e.consume();
+    }
 
     @FXML
     public void leaveGame(Event e) throws IOException {
@@ -123,13 +146,12 @@ public class GameController implements Initializable {
     }
 
     private void hasPlay(boolean usedCard) {
-        turn.setHasPlayed(true);
+        turn.setHasPlayed();
 
         passTurn.setCursor(Cursor.HAND);
-        passTurn.setOnAction(this::nextTurn);
         if (usedCard) {
+            displayDeck();
             stack.setCursor(Cursor.HAND);
-            stack.setOnMouseClicked(this::drawCard);
         }
     }
 
@@ -147,10 +169,30 @@ public class GameController implements Initializable {
         }
     }
 
-    private void displayProgramStack(){
-        programStack.getStyleClass().remove("stack");
-        if(turn.getPlayer().getInstructionsList().size() > 0){
-            programStack.getStyleClass().add("stack");
+    private void displayDeck() {
+        AnchorPane pane;
+        int col = 0;
+        deck.getChildren().removeIf(node -> !(node instanceof GridPane));
+        for (Card card : turn.getPlayer().getDeck()) {
+            int finalCol = col;
+            pane = new AnchorPane();
+            if (card != null) {
+                pane.setCursor(Cursor.OPEN_HAND);
+                pane.getStyleClass().addAll("card", "card-" + card.getType().name().toLowerCase());
+                pane.setOnDragDetected(event -> {
+                    if (!turn.hasDraw()) {
+                        AnchorPane source = (AnchorPane) event.getTarget();
+
+                        Dragboard db = source.startDragAndDrop(TransferMode.MOVE);
+                        ClipboardContent content = new ClipboardContent();
+                        String data = "CARD;" + finalCol + ";" + card.getType();
+                        content.putString(data);
+                        db.setContent(content);
+                    }
+                });
+            }
+            deck.add(pane, col, 0);
+            col++;
         }
     }
 
@@ -161,18 +203,18 @@ public class GameController implements Initializable {
         obstacleDeck.getChildren().clear();
         for (ObstacleTile obstacle : turn.getPlayer().getObstacleDeck()) {
             pane = new AnchorPane();
-            if(obstacle != null){
-                pane.getStyleClass().addAll("pawn", "obstacle-" + obstacle.getType().name().toLowerCase());
-                pane.setCursor(Cursor.OPEN_HAND);
+            if (obstacle != null) {
                 int finalRow = row;
                 int finalCol = col;
+                pane.getStyleClass().addAll("pawn", "obstacle-" + obstacle.getType().name().toLowerCase());
+                pane.setCursor(Cursor.OPEN_HAND);
                 pane.setOnDragDetected(event -> {
-                    if(!turn.hasPlayed()){
+                    if (!turn.hasPlayed()) {
                         AnchorPane source = (AnchorPane) event.getTarget();
 
                         Dragboard db = source.startDragAndDrop(TransferMode.MOVE);
                         ClipboardContent content = new ClipboardContent();
-                        String data = (2 * finalRow + finalCol) + ";" + obstacle.getType();
+                        String data = "OBSTACLE;" + (2 * finalRow + finalCol) + ";" + obstacle.getType();
                         content.putString(data);
                         db.setContent(content);
                     }
@@ -187,63 +229,70 @@ public class GameController implements Initializable {
         }
     }
 
-    private void displayDeck() {
-        AnchorPane pane;
-        int col = 0;
-        deck.getChildren().removeIf(node -> !(node instanceof GridPane));
-        for (Card card : turn.getPlayer().getDeck()) {
-            pane = new AnchorPane();
-            pane.getStyleClass().addAll("card", "card-" + card.getType().name().toLowerCase());
-            deck.add(pane, col, 0);
-            col++;
+    private void displayProgramStack() {
+        programStack.getStyleClass().remove("stack");
+        if (turn.getPlayer().getInstructionsList().size() > 0) {
+            programStack.getStyleClass().add("stack");
         }
     }
 
-    private void placePawn(Pawn pawn, int row, int col){
+    private void placePawn(Pawn pawn, int row, int col) {
         AnchorPane pane = new AnchorPane();
         pane.getStyleClass().add("pawn");
         pane.setOnDragOver(event -> {
+            Dragboard db = event.getDragboard();
+            String[] data = db.getString().split(";");
             AnchorPane target = (AnchorPane) event.getTarget();
-            if (board.getGridElement(GridPane.getRowIndex(target), GridPane.getColumnIndex(target)) == null) {
+
+            if (board.getGridElement(GridPane.getRowIndex(target), GridPane.getColumnIndex(target)) == null && data[0].equals("OBSTACLE")) {
                 event.acceptTransferModes(TransferMode.MOVE);
             }
             event.consume();
         });
         pane.setOnDragEntered(event -> {
+            Dragboard db = event.getDragboard();
+            String[] data = db.getString().split(";");
+
             AnchorPane target = (AnchorPane) event.getTarget();
-            if (board.getGridElement(GridPane.getRowIndex(target), GridPane.getColumnIndex(target)) == null) {
-                target.getStyleClass().add("hover-allowed");
-            } else {
-                target.getStyleClass().add("hover-refused");
+            if (data[0].equals("OBSTACLE")) {
+                if (board.getGridElement(GridPane.getRowIndex(target), GridPane.getColumnIndex(target)) == null) {
+                    target.getStyleClass().add("hover-allowed");
+                } else {
+                    target.getStyleClass().add("hover-refused");
+                }
+                event.acceptTransferModes(TransferMode.MOVE);
             }
-            event.acceptTransferModes(TransferMode.MOVE);
         });
         pane.setOnDragExited(event -> {
             ((AnchorPane) event.getTarget()).getStyleClass().remove("hover-allowed");
             ((AnchorPane) event.getTarget()).getStyleClass().remove("hover-refused");
             event.acceptTransferModes(TransferMode.MOVE);
         });
-        if(pawn == null) {
+        if (pawn == null) {
             pane.setOnDragDropped(event -> {
                 Dragboard db = event.getDragboard();
                 boolean success = false;
                 if (db.hasString()) {
-                    AnchorPane target = (AnchorPane) event.getTarget();
-                    target.getStyleClass().add(db.getString());
-
                     String[] data = db.getString().split(";");
-                    success = buildWall(
-                            Integer.parseInt(data[0]),
-                            ObstacleType.valueOf(data[1]),
-                            GridPane.getRowIndex(target),
-                            GridPane.getColumnIndex(target)
-                    );
+
+                    if (data[0].equals("OBSTACLE")) {
+                        AnchorPane target = (AnchorPane) event.getTarget();
+                        target.getStyleClass().add(db.getString());
+
+                        success = buildWall(
+                                Integer.parseInt(data[1]),
+                                ObstacleType.valueOf(data[2]),
+                                GridPane.getRowIndex(target),
+                                GridPane.getColumnIndex(target)
+                        );
+                    }
+
                 }
                 event.setDropCompleted(success);
                 event.consume();
             });
 
-        }else {
+        } else {
             switch (pawn.getPawnType()) {
                 case PLAYER:
                     pane.setId("turtle-" + ((Player) pawn).getColor().name().toLowerCase());
