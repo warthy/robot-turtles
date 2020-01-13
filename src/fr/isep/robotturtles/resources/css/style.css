@@ -37,6 +37,16 @@
     -fx-grid-lines-visible: true;
 }
 
+.hover-allowed {
+    -fx-border-color: #00ff00;
+    -fx-border-width: 2;
+}
+
+.hover-refused {
+    -fx-border-color: #ff0000;
+    -fx-border-width: 2;
+}
+
 .pawn, .card {
     -fx-background-repeat: no-repeat;
     -fx-background-size: contain;

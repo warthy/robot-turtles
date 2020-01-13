@@ -8,6 +8,7 @@ public class Turn {
     private Player player;
     private boolean hasPlayed = true;
     private boolean hasWithdrawn = false;
+    private boolean hasDraw = false;
 
     public Turn(List<Player> players){
         this.players = new LinkedList<>(players);
@@ -44,5 +45,13 @@ public class Turn {
 
     public Player getPlayer(){
         return player;
+    }
+
+    public boolean hasDraw() {
+        return hasDraw;
+    }
+
+    public void setHasDraw(boolean hasDraw) {
+        this.hasDraw = hasDraw;
     }
 }

@@ -57,13 +57,7 @@ public class Board {
     }
 
     private boolean canPutObstacle(int x, int y, ObstacleType type) {
-        if (type.equals(ObstacleType.STONE)) {
-            // Check if player can access at least one gem
-            for(Player player: players){
 
-            }
-            return false;
-        }
         return true;
     }
 
@@ -80,5 +74,9 @@ public class Board {
 
     public Pawn[][] getGrid(){
         return grid;
+    }
+
+    public Pawn getGridElement(int x, int y){
+        return grid[x][y];
     }
 }

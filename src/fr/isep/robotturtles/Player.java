@@ -37,10 +37,10 @@ public class Player implements Pawn {
         }
     }
 
-    void draw(){
+    public void draw(){
         for(int i = 0; i<deck.length; i++){
             if(deck[i] == null){
-               deck[i] = stack.poll();
+               deck[i] = stack.remove();
             }
         }
     }

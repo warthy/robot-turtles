@@ -23,7 +23,7 @@ public class Main extends Application {
         primaryStage.setOnHidden(e -> System.exit(0));
         primaryStage.setScene(scene);
         primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("resources/images/logo.png")));
-        primaryStage.setFullScreen(true);
+        //primaryStage.setFullScreen(true);
         primaryStage.show();
     }
 }
