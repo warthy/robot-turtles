@@ -57,7 +57,6 @@ public class Board {
     }
 
     private boolean canPutObstacle(int x, int y, ObstacleType type) {
-
         return true;
     }
 

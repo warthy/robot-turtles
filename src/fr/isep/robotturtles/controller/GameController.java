@@ -14,6 +14,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -22,8 +23,12 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -52,7 +57,8 @@ public class GameController implements Initializable {
         renderBoard();
         turn = new Turn(players);
         labelTurn.setText("Tour: tortue " + turn.getPlayer().getColor().name());
-        setUpDeck();
+        displayDeck();
+        displayObstacleDeck();
     }
 
 
@@ -60,9 +66,8 @@ public class GameController implements Initializable {
     public void nextTurn(Event e) {
         if (turn.next()) {
             labelTurn.setText("Tour: tortue " + turn.getPlayer().getColor().name());
-
-            setUpDeck();
-            System.out.println("update layout");
+            displayDeck();
+            displayObstacleDeck();
         }
     }
 
@@ -94,11 +99,6 @@ public class GameController implements Initializable {
         hasPlay(true);
     }
 
-    @FXML
-    public void buildWall(Event e) {
-        //TODO: build wall
-        hasPlay(true);
-    }
 
     @FXML
     public void leaveGame(Event e) throws IOException {
@@ -122,26 +122,62 @@ public class GameController implements Initializable {
         turn.setHasPlayed(true);
 
         passTurn.setCursor(Cursor.HAND);
-        passTurn.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
-                nextTurn(event);
-            }
-        });
-
+        passTurn.setOnAction(this::nextTurn);
         if (usedCard) {
             stack.setCursor(Cursor.HAND);
-            stack.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                public void handle(MouseEvent event) {
-                    drawCard(event);
-                }
-            });
+            stack.setOnMouseClicked(this::drawCard);
         }
     }
 
-    private void setUpDeck() {
-        //Change deck with next player's deck
-        AnchorPane pane;
+    private boolean buildWall(int deckIndex, ObstacleType type, int row, int col) {
+        ObstacleTile obstacle = new ObstacleTile(type);
+        if (board.set(obstacle, row, col)) {
+            turn.getPlayer().removeFromObstacleDeck(deckIndex);
+            displayObstacleDeck();
+            placePawn(obstacle, row, col);
 
+            hasPlay(false);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void displayObstacleDeck() {
+        int row = 0;
+        int col = 0;
+        AnchorPane pane;
+        obstacleDeck.getChildren().clear();
+        for (ObstacleTile obstacle : turn.getPlayer().getObstacleDeck()) {
+            pane = new AnchorPane();
+            if(obstacle != null){
+                pane.getStyleClass().addAll("pawn", "obstacle-" + obstacle.getType().name().toLowerCase());
+                pane.setCursor(Cursor.OPEN_HAND);
+                int finalRow = row;
+                int finalCol = col;
+                pane.setOnDragDetected(event -> {
+                    if(!turn.hasPlayed()){
+                        AnchorPane source = (AnchorPane) event.getTarget();
+
+                        Dragboard db = source.startDragAndDrop(TransferMode.MOVE);
+                        ClipboardContent content = new ClipboardContent();
+                        String data = (2 * finalRow + finalCol) + ";" + obstacle.getType();
+                        content.putString(data);
+                        db.setContent(content);
+                    }
+                    event.consume();
+                });
+            }
+
+            obstacleDeck.add(pane, col, row);
+
+            row = col == 1 ? row + 1 : row;
+            col = col == 1 ? 0 : col + 1;
+        }
+    }
+
+    private void displayDeck() {
+        AnchorPane pane;
         int col = 0;
         deck.getChildren().removeIf(node -> !(node instanceof GridPane));
         for (Card card : turn.getPlayer().getDeck()) {
@@ -150,31 +186,67 @@ public class GameController implements Initializable {
             deck.add(pane, col, 0);
             col++;
         }
-
-        int row = col = 0;
-        obstacleDeck.getChildren().clear();
-        for (ObstacleTile obstacle : turn.getPlayer().getObstacleDeck()) {
-            pane = new AnchorPane();
-            pane.getStyleClass().addAll("pawn", "obstacle-" + obstacle.getType().name().toLowerCase());
-            pane.setCursor(Cursor.OPEN_HAND);
-            pane.setOnDragDetected(event -> {
-                AnchorPane source = (AnchorPane) event.getTarget();
-                source.setCursor(Cursor.CLOSED_HAND);
-
-                Dragboard db = source.startDragAndDrop(TransferMode.MOVE);
-                ClipboardContent content = new ClipboardContent();
-                content.putString("obstacle-" + obstacle.getType().name().toLowerCase());
-                db.setContent(content);
-
-                event.consume();
-            });
-            obstacleDeck.add(pane, col, row);
-
-            row = col == 1 ? row + 1 : row;
-            col = col == 1 ? 0 : col + 1;
-        }
     }
 
+    private void placePawn(Pawn pawn, int row, int col){
+        AnchorPane pane = new AnchorPane();
+        pane.getStyleClass().add("pawn");
+        pane.setOnDragOver(event -> {
+            AnchorPane target = (AnchorPane) event.getTarget();
+            if (board.getGridElement(GridPane.getRowIndex(target), GridPane.getColumnIndex(target)) == null) {
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
+            event.consume();
+        });
+        pane.setOnDragEntered(event -> {
+            AnchorPane target = (AnchorPane) event.getTarget();
+            if (board.getGridElement(GridPane.getRowIndex(target), GridPane.getColumnIndex(target)) == null) {
+                target.getStyleClass().add("hover-allowed");
+            } else {
+                target.getStyleClass().add("hover-refused");
+            }
+            event.acceptTransferModes(TransferMode.MOVE);
+        });
+        pane.setOnDragExited(event -> {
+            ((AnchorPane) event.getTarget()).getStyleClass().remove("hover-allowed");
+            ((AnchorPane) event.getTarget()).getStyleClass().remove("hover-refused");
+            event.acceptTransferModes(TransferMode.MOVE);
+        });
+        if(pawn == null) {
+            pane.setOnDragDropped(event -> {
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                if (db.hasString()) {
+                    AnchorPane target = (AnchorPane) event.getTarget();
+                    target.getStyleClass().add(db.getString());
+
+                    String[] data = db.getString().split(";");
+                    success = buildWall(
+                            Integer.parseInt(data[0]),
+                            ObstacleType.valueOf(data[1]),
+                            GridPane.getRowIndex(target),
+                            GridPane.getColumnIndex(target)
+                    );
+                }
+                event.setDropCompleted(success);
+                event.consume();
+            });
+
+        }else {
+            switch (pawn.getPawnType()) {
+                case PLAYER:
+                    pane.setId("turtle-" + ((Player) pawn).getColor().name().toLowerCase());
+                    break;
+                case OBSTACLE:
+                    pane.getStyleClass().add("obstacle-" + ((ObstacleTile) pawn).getType().name().toLowerCase());
+                    break;
+                case JEWEL:
+                    pane.getStyleClass().add("jewel");
+                    break;
+            }
+        }
+        grid.add(pane, col, row);
+    }
 
     private void renderBoard() {
         //Clear grid by removing all children
@@ -183,56 +255,7 @@ public class GameController implements Initializable {
         for (Pawn[] rows : board.getGrid()) {
             int col = 0;
             for (Pawn pawn : rows) {
-                AnchorPane pane = new AnchorPane();
-                pane.getStyleClass().add("pawn");
-                pane.setOnDragOver(event -> {
-                    AnchorPane target = (AnchorPane) event.getTarget();
-                    if(board.getGridElement(GridPane.getRowIndex(target), GridPane.getColumnIndex(target)) == null){
-                        event.acceptTransferModes(TransferMode.MOVE);
-                    }
-                    event.consume();
-                });
-                pane.setOnDragEntered(event -> {
-                    AnchorPane target = (AnchorPane) event.getTarget();
-                    if(board.getGridElement(GridPane.getRowIndex(target), GridPane.getColumnIndex(target)) == null) {
-                        target.getStyleClass().add("hover-allowed");
-                    }else {
-                        target.getStyleClass().add("hover-refused");
-                    }
-                    event.acceptTransferModes(TransferMode.MOVE);
-                });
-                pane.setOnDragExited(event -> {
-                    ((AnchorPane) event.getTarget()).getStyleClass().remove("hover-allowed");
-                    ((AnchorPane) event.getTarget()).getStyleClass().remove("hover-refused");
-                    event.acceptTransferModes(TransferMode.MOVE);
-                });
-
-                if (pawn != null) {
-                    switch (pawn.getPawnType()) {
-                        case PLAYER:
-                            pane.setId("turtle-" + ((Player) pawn).getColor().name().toLowerCase());
-                            break;
-                        case OBSTACLE:
-                            pane.getStyleClass().add("obstacle-" + ((ObstacleTile) pawn).getType().name().toLowerCase());
-                            break;
-                        case JEWEL:
-                            pane.getStyleClass().add("jewel");
-                            break;
-                    }
-                } else {
-                    pane.setOnDragDropped(event -> {
-                        Dragboard db = event.getDragboard();
-                        boolean success = false;
-                        if (db.hasString()) {
-                            AnchorPane target = (AnchorPane) event.getTarget();
-                            target.getStyleClass().add(db.getString());
-                            success = board.set(new ObstacleTile(ObstacleType.ICE), GridPane.getRowIndex(target), GridPane.getColumnIndex(target));
-                        }
-                        event.setDropCompleted(success);
-                        event.consume();
-                    });
-                }
-                grid.add(pane, col, row);
+                placePawn(pawn, row, col);
                 col++;
             }
             row++;

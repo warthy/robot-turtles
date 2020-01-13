@@ -61,6 +61,10 @@ public class Player implements Pawn {
         this.obstacleDeck = obstacleDeck;
     }
 
+    public void removeFromObstacleDeck(int index){
+        this.obstacleDeck[index] = null;
+    }
+
     public Boolean getHasUsedBug() {
         return hasUsedBug;
     }
