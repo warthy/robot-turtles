@@ -65,7 +65,7 @@
                 <Text fx:id="labelTurn" strokeType="OUTSIDE" strokeWidth="0.0" />
             <HBox alignment="BASELINE_CENTER" prefHeight="100.0" prefWidth="102.0">
                <children>
-                      <Button fx:id="passTurn" alignment="CENTER" mnemonicParsing="false" prefHeight="250.0" prefWidth="400.0" styleClass="game-button" text="Fin du Tour">
+                      <Button fx:id="passTurn" onAction="#nextTurn" alignment="CENTER" mnemonicParsing="false" prefHeight="250.0" prefWidth="400.0" styleClass="game-button" text="Fin du Tour">
                           <cursor>
                               <Cursor fx:constant="WAIT" />
                           </cursor>

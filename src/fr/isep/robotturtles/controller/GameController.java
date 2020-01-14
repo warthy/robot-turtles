@@ -71,7 +71,8 @@ public class GameController implements Initializable {
     public void nextTurn(Event e) {
         if (turn.next()) {
             labelTurn.setText("Tour: tortue " + turn.getPlayer().getColor().name());
-
+            passTurn.setCursor(Cursor.WAIT);
+            stack.setCursor(Cursor.WAIT);
             displayDeck();
             displayObstacleDeck();
             displayProgramStack();
