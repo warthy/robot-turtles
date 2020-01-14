@@ -7,6 +7,7 @@ public class Turn {
     private LinkedList<Player> players;
     private Player player;
     private boolean hasPlayed = true;
+    private boolean hasCompleteProgram = true;
     private boolean hasWithdrawn = false;
     private boolean hasDraw = false;
 
@@ -22,6 +23,8 @@ public class Turn {
 
             hasPlayed = false;
             hasWithdrawn = false;
+            hasDraw = false;
+            hasCompleteProgram = false;
             return true;
         }
         return false;
@@ -54,5 +57,13 @@ public class Turn {
     public void setHasDraw() {
         player.draw();
         this.hasDraw = true;
+    }
+
+    public boolean hasCompleteProgram() {
+        return hasCompleteProgram;
+    }
+
+    public void setHasCompleteProgram() {
+        this.hasCompleteProgram = true;
     }
 }

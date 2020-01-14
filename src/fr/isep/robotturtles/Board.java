@@ -19,16 +19,16 @@ public class Board {
             case 2:
                 players.get(0).setStartCoordinate(1);
                 players.get(1).setStartCoordinate(5);
-                grid[grid.length - 1][3] = new JewelTile();
+                grid[0][3] = new JewelTile();
                 break;
             case 3:
                 players.get(0).setStartCoordinate(0);
                 players.get(1).setStartCoordinate(3);
                 players.get(2).setStartCoordinate(6);
 
-                grid[grid.length - 1][0] = new JewelTile();
-                grid[grid.length - 1][3] = new JewelTile();
-                grid[grid.length - 1][6] = new JewelTile();
+                grid[0][0] = new JewelTile();
+                grid[0][3] = new JewelTile();
+                grid[0][6] = new JewelTile();
                 break;
             case 4:
                 players.get(0).setStartCoordinate(0);
@@ -36,8 +36,8 @@ public class Board {
                 players.get(2).setStartCoordinate(5);
                 players.get(3).setStartCoordinate(7);
 
-                grid[grid.length - 1][1] = new JewelTile();
-                grid[grid.length - 1][6] = new JewelTile();
+                grid[0][1] = new JewelTile();
+                grid[0][6] = new JewelTile();
                 break;
             default:
                 //TODO implement exception
@@ -46,7 +46,7 @@ public class Board {
 
         // Set player on board
         for (Player player : players) {
-            grid[0][player.getStartCoordinate()] = player;
+            grid[grid.length - 1][player.getStartCoordinate()] = player;
         }
         if (players.size() <= 3) {
             // Add wall on right side of the board

@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -96,7 +97,6 @@ public class GameController implements Initializable {
 
     @FXML
     public void executeProgram(Event e) {
-        //TODO: launch program
         hasPlay(false);
     }
 
@@ -110,6 +110,7 @@ public class GameController implements Initializable {
             turn.getPlayer().getInstructionsList().add(new Card(CardType.valueOf(data[2])));
 
             displayProgramStack();
+            turn.setHasCompleteProgram();
             hasPlay(true);
             success = true;
         }
@@ -180,7 +181,7 @@ public class GameController implements Initializable {
                 pane.setCursor(Cursor.OPEN_HAND);
                 pane.getStyleClass().addAll("card", "card-" + card.getType().name().toLowerCase());
                 pane.setOnDragDetected(event -> {
-                    if (!turn.hasDraw()) {
+                    if ((!turn.hasPlayed() || (turn.hasPlayed() && turn.hasCompleteProgram())) && !turn.hasDraw()) {
                         AnchorPane source = (AnchorPane) event.getTarget();
 
                         Dragboard db = source.startDragAndDrop(TransferMode.MOVE);

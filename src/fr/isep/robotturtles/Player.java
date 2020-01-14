@@ -7,7 +7,7 @@ import java.util.*;
 
 public class Player implements Pawn {
     private Card[] deck = new Card[5];
-    private LinkedList<Card> stack = new LinkedList<>();;
+    private LinkedList<Card> stack = new LinkedList<>();
     private ObstacleTile[] obstacleDeck = new ObstacleTile[5];
     private Boolean hasUsedBug = false;
     private List<Card> instructionsList = new LinkedList<>();
@@ -15,6 +15,7 @@ public class Player implements Pawn {
     private Orientation orientation;
     // We only keep X coordinate as Y is always 0
     private int startCoordinate;
+    private int[] coordinates = new int[2];
 
     public Player(PlayerColor color){
         this.color = color;
