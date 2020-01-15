@@ -118,7 +118,7 @@ public class GameController implements Initializable {
         Dragboard db = e.getDragboard();
         boolean success = false;
         String[] data = db.getString().split(";");
-        if (!turn.hasDraw() && data[0].equals("CARD")) {
+        if (!turn.hasDraw() && !turn.hasWithdrawn() && data[0].equals("CARD")) {
             turn.getPlayer().getDeck()[Integer.parseInt(data[1])] = null;
             turn.getPlayer().getInstructionsList().add(new Card(CardType.valueOf(data[2])));
 
@@ -197,7 +197,7 @@ public class GameController implements Initializable {
                 pane.setCursor(Cursor.OPEN_HAND);
                 pane.getStyleClass().addAll("card", "card-" + card.getType().name().toLowerCase());
                 pane.setOnDragDetected(event -> {
-                    if (!turn.hasDraw()) {
+                    if (!turn.hasDraw() && !turn.hasWithdrawn()) {
                         AnchorPane source = (AnchorPane) event.getTarget();
 
                         Dragboard db = source.startDragAndDrop(TransferMode.MOVE);
