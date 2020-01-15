@@ -8,6 +8,7 @@ import fr.isep.robotturtles.tiles.ObstacleTile;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -66,7 +67,6 @@ public class GameController implements Initializable {
         displayProgramStack();
     }
 
-
     @FXML
     public void nextTurn(Event e) {
         if (turn.next()) {
@@ -90,14 +90,26 @@ public class GameController implements Initializable {
     }
 
     @FXML
-    public void withdrawCard(Event e) {
-        if (turn.hasPlayed()) {
+    public void withdrawCard(DragEvent e) {
+        boolean success = false;
+        if (turn.hasPlayed() && !turn.hasDraw()) {
+            Dragboard db = e.getDragboard();
+            String[] data = db.getString().split(";");
+            if (data[0].equals("CARD")) {
+                turn.getPlayer().getDeck()[Integer.parseInt(data[1])] = null;
+                success = true;
+            }
 
+            hasPlay(true);
+            turn.hasWithdrawn();
         }
+        e.setDropCompleted(success);
+        e.consume();
     }
 
     @FXML
     public void executeProgram(Event e) {
+
         hasPlay(false);
     }
 
@@ -106,7 +118,7 @@ public class GameController implements Initializable {
         Dragboard db = e.getDragboard();
         boolean success = false;
         String[] data = db.getString().split(";");
-        if (data[0].equals("CARD")) {
+        if (!turn.hasDraw() && data[0].equals("CARD")) {
             turn.getPlayer().getDeck()[Integer.parseInt(data[1])] = null;
             turn.getPlayer().getInstructionsList().add(new Card(CardType.valueOf(data[2])));
 
@@ -120,9 +132,12 @@ public class GameController implements Initializable {
     }
 
     @FXML
-    public void allowCardDrag(DragEvent e) {
+    public void allowCardDrop(DragEvent e) {
+        EventTarget target = e.getTarget();
+
         Dragboard db = e.getDragboard();
         String[] data = db.getString().split(";");
+        //(target.equals(stack) && )
         if (data[0].equals("CARD")) {
             e.acceptTransferModes(TransferMode.MOVE);
         }
@@ -182,7 +197,7 @@ public class GameController implements Initializable {
                 pane.setCursor(Cursor.OPEN_HAND);
                 pane.getStyleClass().addAll("card", "card-" + card.getType().name().toLowerCase());
                 pane.setOnDragDetected(event -> {
-                    if ((!turn.hasPlayed() || (turn.hasPlayed() && turn.hasCompleteProgram())) && !turn.hasDraw()) {
+                    if (!turn.hasDraw()) {
                         AnchorPane source = (AnchorPane) event.getTarget();
 
                         Dragboard db = source.startDragAndDrop(TransferMode.MOVE);

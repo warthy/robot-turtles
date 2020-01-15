@@ -77,7 +77,7 @@
             </HBox>
                 <VBox prefHeight="500.0" prefWidth="500.0">
                     <children>
-                        <Pane fx:id="stack" prefHeight="350.0" prefWidth="350.0" onMouseClicked="#drawCard">
+                        <Pane fx:id="stack" onDragDropped="#withdrawCard" onDragOver="#allowCardDrop" prefHeight="350.0" prefWidth="350.0" onMouseClicked="#drawCard">
                             <cursor>
                                 <Cursor fx:constant="WAIT" />
                             </cursor>
@@ -121,7 +121,7 @@
         </GridPane>
       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <HBox fx:id="programStack" onDragDropped="#completeProgram" onDragOver="#allowCardDrag" prefHeight="250.0" prefWidth="250.0" style="-fx-border-color: #8BC53F; -fx-border-width: 3;">
+            <HBox fx:id="programStack" onDragDropped="#completeProgram" onDragOver="#allowCardDrop" prefHeight="250.0" prefWidth="250.0" style="-fx-border-color: #8BC53F; -fx-border-width: 3;">
                <styleClass>
                   <String fx:value="card" />
                </styleClass>
