@@ -132,7 +132,7 @@ public class GameController implements Initializable {
         Window window = menu.getWindow();
         Stage stage = (Stage) window;
 
-        Parent root = FXMLLoader.load(Main.class.getResource("views/Menu.fxml"));
+        Parent root = FXMLLoader.load(Main.class.getResource("view/Menu.fxml"));
         Scene menuScene = new Scene(root);
 
         stage.setScene(menuScene);

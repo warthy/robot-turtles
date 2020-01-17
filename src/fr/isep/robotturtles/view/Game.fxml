@@ -8,7 +8,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane id="game" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.isep.robotturtles.controller.GameController">
+<GridPane id="game" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../resources/css/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.isep.robotturtles.controller.GameController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="459.0" minWidth="10.0" percentWidth="80.0" prefWidth="449.0" />
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" percentWidth="20.0" prefWidth="151.0" />
@@ -18,7 +18,7 @@
         <RowConstraints minHeight="10.0" percentHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <GridPane id="board" fx:id="grid" prefHeight="280.0" prefWidth="500.0" stylesheets="@../css/style.css">
+        <GridPane id="board" fx:id="grid" prefHeight="280.0" prefWidth="500.0" stylesheets="@../resources/css/style.css">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -65,7 +65,7 @@
                 <Text fx:id="labelTurn" strokeType="OUTSIDE" strokeWidth="0.0" />
             <HBox alignment="BASELINE_CENTER" prefHeight="100.0" prefWidth="102.0">
                <children>
-                      <Button fx:id="passTurn" onAction="#nextTurn" alignment="CENTER" mnemonicParsing="false" prefHeight="250.0" prefWidth="400.0" styleClass="game-button" text="Fin du Tour">
+                      <Button fx:id="passTurn" alignment="CENTER" mnemonicParsing="false" onAction="#nextTurn" prefHeight="250.0" prefWidth="400.0" styleClass="game-button" text="Fin du Tour">
                           <cursor>
                               <Cursor fx:constant="WAIT" />
                           </cursor>

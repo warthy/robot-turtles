@@ -1,6 +1,4 @@
-package fr.isep.robotturtles.tiles;
-
-import fr.isep.robotturtles.Pawn;
+package fr.isep.robotturtles.model.tiles;
 
 interface Tiles {
 
