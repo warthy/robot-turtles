@@ -47,7 +47,6 @@ public class GameController implements Initializable {
     public GridPane deck = null;
     public GridPane obstacleDeck = null;
     public HBox programStack = null;
-    public Pane stack = null;
 
     static void initGame(int playerSize) {
         players = new ArrayList<>();
@@ -72,7 +71,8 @@ public class GameController implements Initializable {
         if (turn.next()) {
             labelTurn.setText("Tour: tortue " + turn.getPlayer().getColor().name());
             passTurn.setCursor(Cursor.WAIT);
-            stack.setCursor(Cursor.WAIT);
+
+            turn.getPlayer().draw();
             displayDeck();
             displayObstacleDeck();
             displayProgramStack();
@@ -80,19 +80,9 @@ public class GameController implements Initializable {
     }
 
     @FXML
-    public void drawCard(Event e) {
-        if (turn.hasPlayed() && !turn.hasDraw()) {
-            turn.setHasDraw();
-
-            stack.setCursor(Cursor.DEFAULT);
-            displayDeck();
-        }
-    }
-
-    @FXML
-    public void withdrawCard(DragEvent e) {
+    public void discardCard(DragEvent e) {
         boolean success = false;
-        if (turn.hasPlayed() && !turn.hasDraw()) {
+        if (turn.hasPlayed()) {
             Dragboard db = e.getDragboard();
             String[] data = db.getString().split(";");
             if (data[0].equals("CARD")) {
@@ -101,7 +91,7 @@ public class GameController implements Initializable {
             }
 
             hasPlay(true);
-            turn.hasWithdrawn();
+            turn.setHasDiscard(true);
         }
         e.setDropCompleted(success);
         e.consume();
@@ -118,7 +108,7 @@ public class GameController implements Initializable {
         Dragboard db = e.getDragboard();
         boolean success = false;
         String[] data = db.getString().split(";");
-        if (!turn.hasDraw() && !turn.hasWithdrawn() && data[0].equals("CARD")) {
+        if ((turn.hasPlayed() && turn.hasCompleteProgram() || (!turn.hasPlayed())) && !turn.hasDiscard() && data[0].equals("CARD")) {
             turn.getPlayer().getDeck()[Integer.parseInt(data[1])] = null;
             turn.getPlayer().getInstructionsList().add(new Card(CardType.valueOf(data[2])));
 
@@ -168,7 +158,6 @@ public class GameController implements Initializable {
         passTurn.setCursor(Cursor.HAND);
         if (usedCard) {
             displayDeck();
-            stack.setCursor(Cursor.HAND);
         }
     }
 
@@ -197,15 +186,14 @@ public class GameController implements Initializable {
                 pane.setCursor(Cursor.OPEN_HAND);
                 pane.getStyleClass().addAll("card", "card-" + card.getType().name().toLowerCase());
                 pane.setOnDragDetected(event -> {
-                    if (!turn.hasDraw() && !turn.hasWithdrawn()) {
-                        AnchorPane source = (AnchorPane) event.getTarget();
+                    AnchorPane source = (AnchorPane) event.getTarget();
 
-                        Dragboard db = source.startDragAndDrop(TransferMode.MOVE);
-                        ClipboardContent content = new ClipboardContent();
-                        String data = "CARD;" + finalCol + ";" + card.getType();
-                        content.putString(data);
-                        db.setContent(content);
-                    }
+                    Dragboard db = source.startDragAndDrop(TransferMode.MOVE);
+                    ClipboardContent content = new ClipboardContent();
+                    String data = "CARD;" + finalCol + ";" + card.getType();
+                    content.putString(data);
+                    db.setContent(content);
+
                 });
             }
             deck.add(pane, col, 0);

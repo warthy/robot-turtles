@@ -2,7 +2,7 @@ package fr.isep.robotturtles.constants;
 
 public enum Orientation {
     DOWN, RIGHT, LEFT, UP;
-    
+
     Orientation getRight(){
         switch (this){
             case DOWN:

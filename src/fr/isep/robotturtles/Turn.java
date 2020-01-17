@@ -8,7 +8,7 @@ public class Turn {
     private Player player;
     private boolean hasPlayed = true;
     private boolean hasCompleteProgram = true;
-    private boolean hasWithdrawn = false;
+    private boolean hasDiscard = false;
     private boolean hasDraw = false;
 
     public Turn(List<Player> players){
@@ -22,7 +22,7 @@ public class Turn {
             players.add(player);
 
             hasPlayed = false;
-            hasWithdrawn = false;
+            hasDiscard = false;
             hasDraw = false;
             hasCompleteProgram = false;
             return true;
@@ -38,25 +38,16 @@ public class Turn {
         this.hasPlayed = true;
     }
 
-    public boolean hasWithdrawn() {
-        return hasWithdrawn;
+    public boolean hasDiscard() {
+        return hasDiscard;
     }
 
-    public void setHasWithdrawn(boolean hasWithdrawn) {
-        this.hasWithdrawn = hasWithdrawn;
+    public void setHasDiscard(boolean hasDiscard) {
+        this.hasDiscard = hasDiscard;
     }
 
     public Player getPlayer(){
         return player;
-    }
-
-    public boolean hasDraw() {
-        return hasDraw;
-    }
-
-    public void setHasDraw() {
-        player.draw();
-        this.hasDraw = true;
     }
 
     public boolean hasCompleteProgram() {

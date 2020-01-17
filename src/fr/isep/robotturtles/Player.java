@@ -8,6 +8,7 @@ import java.util.*;
 public class Player implements Pawn {
     private Card[] deck = new Card[5];
     private LinkedList<Card> stack = new LinkedList<>();
+
     private ObstacleTile[] obstacleDeck = new ObstacleTile[5];
     private Boolean hasUsedBug = false;
     private List<Card> instructionsList = new LinkedList<>();
@@ -19,6 +20,7 @@ public class Player implements Pawn {
 
     public Player(PlayerColor color){
         this.color = color;
+        orientation = Orientation.UP;
         stack.addAll(Collections.nCopies(18, new Card(CardType.BLUE)));
         stack.addAll(Collections.nCopies(8, new Card(CardType.YELLOW)));
         stack.addAll(Collections.nCopies(8, new Card(CardType.PURPLE)));
