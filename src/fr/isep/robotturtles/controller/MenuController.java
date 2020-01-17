@@ -44,7 +44,7 @@ public class MenuController {
         Stage stage = (Stage)window;
 
         GameController.initGame(Integer.parseInt(counter.getText()));
-        Parent root = FXMLLoader.load(Main.class.getResource("resources/scenes/Game.fxml"));
+        Parent root = FXMLLoader.load(Main.class.getResource("views/Game.fxml"));
         Scene gameScene = new Scene(root, 1000 , 600);
 
         stage.setScene(gameScene);

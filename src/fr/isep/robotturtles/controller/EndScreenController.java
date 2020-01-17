@@ -22,7 +22,7 @@ public class EndScreenController {
         Window window = menu.getWindow();
         Stage stage = (Stage) window;
 
-        Parent root = FXMLLoader.load(Main.class.getResource("resources/scenes/Menu.fxml"));
+        Parent root = FXMLLoader.load(Main.class.getResource("views/Menu.fxml"));
         Scene menuScene = new Scene(root);
 
         stage.setScene(menuScene);

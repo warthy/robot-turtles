@@ -1,9 +1,9 @@
-package fr.isep.robotturtles;
+package fr.isep.robotturtles.model;
 
 import fr.isep.robotturtles.constants.ObstacleType;
 import fr.isep.robotturtles.constants.PawnType;
-import fr.isep.robotturtles.tiles.JewelTile;
-import fr.isep.robotturtles.tiles.ObstacleTile;
+import fr.isep.robotturtles.model.tiles.JewelTile;
+import fr.isep.robotturtles.model.tiles.ObstacleTile;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
-package fr.isep.robotturtles;
+package fr.isep.robotturtles.model;
 
 import fr.isep.robotturtles.constants.*;
-import fr.isep.robotturtles.tiles.ObstacleTile;
+import fr.isep.robotturtles.model.tiles.ObstacleTile;
 
 import java.util.*;
 
@@ -18,6 +18,7 @@ public class Player implements Pawn {
 
     // We only keep X coordinate as Y is always 0
     private int startCoordinate;
+    // [X, Y]
     private int[] coordinates = new int[2];
 
     public Player(PlayerColor color){

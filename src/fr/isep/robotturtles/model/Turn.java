@@ -1,4 +1,4 @@
-package fr.isep.robotturtles;
+package fr.isep.robotturtles.model;
 
 import java.util.LinkedList;
 import java.util.List;

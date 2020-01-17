@@ -1,4 +1,4 @@
-package fr.isep.robotturtles;
+package fr.isep.robotturtles.model;
 
 import fr.isep.robotturtles.constants.PawnType;
 

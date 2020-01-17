@@ -4,10 +4,9 @@ import fr.isep.robotturtles.*;
 import fr.isep.robotturtles.constants.CardType;
 import fr.isep.robotturtles.constants.ObstacleType;
 import fr.isep.robotturtles.constants.PlayerColor;
-import fr.isep.robotturtles.tiles.ObstacleTile;
-import javafx.event.ActionEvent;
+import fr.isep.robotturtles.model.*;
+import fr.isep.robotturtles.model.tiles.ObstacleTile;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.event.EventTarget;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,24 +15,17 @@ import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -140,7 +132,7 @@ public class GameController implements Initializable {
         Window window = menu.getWindow();
         Stage stage = (Stage) window;
 
-        Parent root = FXMLLoader.load(Main.class.getResource("resources/scenes/Menu.fxml"));
+        Parent root = FXMLLoader.load(Main.class.getResource("views/Menu.fxml"));
         Scene menuScene = new Scene(root);
 
         stage.setScene(menuScene);
