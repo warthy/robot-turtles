@@ -86,7 +86,7 @@ public class GameController implements Initializable {
             Dragboard db = e.getDragboard();
             String[] data = db.getString().split(";");
             if (data[0].equals("CARD")) {
-                turn.getPlayer().getDeck()[Integer.parseInt(data[1])] = null;
+                turn.getPlayer().discardCard(Integer.parseInt(data[1]));
                 success = true;
             }
 

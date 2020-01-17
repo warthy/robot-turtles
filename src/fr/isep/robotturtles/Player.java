@@ -8,12 +8,14 @@ import java.util.*;
 public class Player implements Pawn {
     private Card[] deck = new Card[5];
     private LinkedList<Card> stack = new LinkedList<>();
+    private List<Card> trash = new ArrayList<>();
 
     private ObstacleTile[] obstacleDeck = new ObstacleTile[5];
     private Boolean hasUsedBug = false;
     private List<Card> instructionsList = new LinkedList<>();
     private PlayerColor color;
     private Orientation orientation;
+
     // We only keep X coordinate as Y is always 0
     private int startCoordinate;
     private int[] coordinates = new int[2];
@@ -38,9 +40,15 @@ public class Player implements Pawn {
     public void draw(){
         for(int i = 0; i<deck.length; i++){
             if(deck[i] == null){
+                if(stack.size() == 0) resetStack();
                deck[i] = stack.remove();
             }
         }
+    }
+
+    private void resetStack(){
+        stack.addAll(trash);
+        Collections.shuffle(trash);
     }
 
     public Card[] getDeck() {
@@ -75,17 +83,15 @@ public class Player implements Pawn {
         return instructionsList;
     }
 
-    public void setInstructionsList(List<Card> instructionsList) {
-        this.instructionsList = instructionsList;
+    public void discardCard(int cardIndex){
+        trash.add( deck[cardIndex]);
+        deck[cardIndex] = null;
     }
 
     public PlayerColor getColor() {
         return color;
     }
 
-    public void setColor(PlayerColor color) {
-        this.color = color;
-    }
 
     public void addInstruction(Card[] instructions){
         instructionsList.addAll(Arrays.asList(instructions));
@@ -109,5 +115,9 @@ public class Player implements Pawn {
 
     public PawnType getPawnType(){
         return PawnType.PLAYER;
+    }
+
+    public int[] getCoordinates() {
+        return coordinates;
     }
 }
