@@ -5,7 +5,7 @@ import fr.isep.robotturtles.constants.CardType;
 import fr.isep.robotturtles.constants.ObstacleType;
 import fr.isep.robotturtles.constants.PlayerColor;
 import fr.isep.robotturtles.model.*;
-import fr.isep.robotturtles.model.tiles.ObstacleTile;
+import fr.isep.robotturtles.model.Obstacle;
 import javafx.event.Event;
 import javafx.event.EventTarget;
 import javafx.fxml.FXML;
@@ -33,6 +33,7 @@ public class GameController implements Initializable {
     static List<Player> players;
     static Board board;
     private Turn turn;
+
     public GridPane grid = null;
     public Button passTurn = null;
     public Text labelTurn = null;
@@ -154,7 +155,7 @@ public class GameController implements Initializable {
     }
 
     private boolean buildWall(int deckIndex, ObstacleType type, int row, int col) {
-        ObstacleTile obstacle = new ObstacleTile(type);
+        Obstacle obstacle = new Obstacle(type);
         if (board.set(obstacle, row, col)) {
             turn.getPlayer().removeFromObstacleDeck(deckIndex);
             displayObstacleDeck();
@@ -198,7 +199,7 @@ public class GameController implements Initializable {
         int col = 0;
         AnchorPane pane;
         obstacleDeck.getChildren().clear();
-        for (ObstacleTile obstacle : turn.getPlayer().getObstacleDeck()) {
+        for (Obstacle obstacle : turn.getPlayer().getObstacleDeck()) {
             pane = new AnchorPane();
             if (obstacle != null) {
                 int finalRow = row;
@@ -295,7 +296,7 @@ public class GameController implements Initializable {
                     pane.setId("turtle-" + ((Player) pawn).getColor().name().toLowerCase());
                     break;
                 case OBSTACLE:
-                    pane.getStyleClass().add("obstacle-" + ((ObstacleTile) pawn).getType().name().toLowerCase());
+                    pane.getStyleClass().add("obstacle-" + ((Obstacle) pawn).getType().name().toLowerCase());
                     break;
                 case JEWEL:
                     pane.getStyleClass().add("jewel");

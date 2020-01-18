@@ -1,14 +1,14 @@
-package fr.isep.robotturtles.model.tiles;
+package fr.isep.robotturtles.model;
 
 import fr.isep.robotturtles.model.Pawn;
 import fr.isep.robotturtles.constants.ObstacleType;
 import fr.isep.robotturtles.constants.PawnType;
 
-public class ObstacleTile implements Tiles, Pawn {
+public class Obstacle implements Pawn {
 
     private ObstacleType type;
 
-    public ObstacleTile(ObstacleType type){
+    public Obstacle(ObstacleType type){
         this.type = type;
     }
 

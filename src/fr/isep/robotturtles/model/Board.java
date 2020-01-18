@@ -2,33 +2,30 @@ package fr.isep.robotturtles.model;
 
 import fr.isep.robotturtles.constants.ObstacleType;
 import fr.isep.robotturtles.constants.PawnType;
-import fr.isep.robotturtles.model.tiles.JewelTile;
-import fr.isep.robotturtles.model.tiles.ObstacleTile;
 
 import java.util.List;
 
 public class Board {
     // [x][y]
     Pawn[][] grid = new Pawn[8][8];
-    Player[] players;
 
     public Board(List<Player> players) {
-        this.players = players.toArray(new Player[0]);
+        players.toArray(new Player[0]);
 
         switch (players.size()) {
             case 2:
                 players.get(0).setStartCoordinate(1);
                 players.get(1).setStartCoordinate(5);
-                grid[0][3] = new JewelTile();
+                grid[0][3] = new Jewel();
                 break;
             case 3:
                 players.get(0).setStartCoordinate(0);
                 players.get(1).setStartCoordinate(3);
                 players.get(2).setStartCoordinate(6);
 
-                grid[0][0] = new JewelTile();
-                grid[0][3] = new JewelTile();
-                grid[0][6] = new JewelTile();
+                grid[0][0] = new Jewel();
+                grid[0][3] = new Jewel();
+                grid[0][6] = new Jewel();
                 break;
             case 4:
                 players.get(0).setStartCoordinate(0);
@@ -36,8 +33,8 @@ public class Board {
                 players.get(2).setStartCoordinate(5);
                 players.get(3).setStartCoordinate(7);
 
-                grid[0][1] = new JewelTile();
-                grid[0][6] = new JewelTile();
+                grid[0][1] = new Jewel();
+                grid[0][6] = new Jewel();
                 break;
             default:
                 //TODO implement exception
@@ -51,7 +48,7 @@ public class Board {
         if (players.size() <= 3) {
             // Add wall on right side of the board
             for (Pawn[] lines : grid) {
-                lines[lines.length - 1] = new ObstacleTile(ObstacleType.STONE);
+                lines[lines.length - 1] = new Obstacle(ObstacleType.STONE);
             }
         }
     }
@@ -63,7 +60,7 @@ public class Board {
     public boolean set(Pawn pawn, int x, int y) {
         if ((grid[x][y] == null)
                 || (grid[x][y] != null && grid[x][y].getPawnType().equals(PawnType.JEWEL) && pawn.getPawnType().equals(PawnType.PLAYER))
-                || (pawn instanceof ObstacleTile && canPutObstacle(x, y, ((ObstacleTile) pawn).getType()))
+                || (pawn instanceof Obstacle && canPutObstacle(x, y, ((Obstacle) pawn).getType()))
         ){
             grid[x][y] = pawn;
             return true;
