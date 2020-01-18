@@ -1,7 +1,6 @@
 package fr.isep.robotturtles.model;
 
 import fr.isep.robotturtles.constants.*;
-import fr.isep.robotturtles.model.tiles.ObstacleTile;
 
 import java.util.*;
 
@@ -10,7 +9,7 @@ public class Player implements Pawn {
     private LinkedList<Card> stack = new LinkedList<>();
     private List<Card> trash = new ArrayList<>();
 
-    private ObstacleTile[] obstacleDeck = new ObstacleTile[5];
+    private Obstacle[] obstacleDeck = new Obstacle[5];
     private Boolean hasUsedBug = false;
     private List<Card> instructionsList = new LinkedList<>();
     private PlayerColor color;
@@ -30,8 +29,8 @@ public class Player implements Pawn {
         stack.addAll(Collections.nCopies(3, new Card(CardType.LASER)));
         Collections.shuffle(stack);
 
-        Arrays.fill(obstacleDeck, 0, 3, new ObstacleTile(ObstacleType.STONE));
-        Arrays.fill(obstacleDeck, 3, 5, new ObstacleTile(ObstacleType.ICE));
+        Arrays.fill(obstacleDeck, 0, 3, new Obstacle(ObstacleType.STONE));
+        Arrays.fill(obstacleDeck, 3, 5, new Obstacle(ObstacleType.ICE));
 
         for(int i =0; i<5;i++){
             deck[i] = stack.remove();
@@ -60,11 +59,11 @@ public class Player implements Pawn {
         return stack;
     }
 
-    public ObstacleTile[] getObstacleDeck() {
+    public Obstacle[] getObstacleDeck() {
         return obstacleDeck;
     }
 
-    public void setObstacleDeck(ObstacleTile[] obstacleDeck) {
+    public void setObstacleDeck(Obstacle[] obstacleDeck) {
         this.obstacleDeck = obstacleDeck;
     }
 

@@ -9,7 +9,6 @@ public class Turn {
     private boolean hasPlayed = true;
     private boolean hasCompleteProgram = true;
     private boolean hasDiscard = false;
-    private boolean hasDraw = false;
 
     public Turn(List<Player> players){
         this.players = new LinkedList<>(players);
@@ -23,7 +22,6 @@ public class Turn {
 
             hasPlayed = false;
             hasDiscard = false;
-            hasDraw = false;
             hasCompleteProgram = false;
             return true;
         }

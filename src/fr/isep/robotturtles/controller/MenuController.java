@@ -17,7 +17,7 @@ public class MenuController {
     public Text counter = null;
 
     @FXML
-    public void increase(Event e){
+    public void increaseCounter(Event e){
         int count = Integer.parseInt(counter.getText()) + 1;
         if (count < 5){
             counter.setText(Integer.toString(count));
@@ -25,7 +25,7 @@ public class MenuController {
     }
 
     @FXML
-    public void decrease(Event e){
+    public void decreaseCounter(Event e){
         int count = Integer.parseInt(counter.getText()) - 1;
         if (count > 1){
             counter.setText(Integer.toString(count));
@@ -48,6 +48,6 @@ public class MenuController {
         Scene gameScene = new Scene(root, 1000 , 600);
 
         stage.setScene(gameScene);
-        //stage.setFullScreen(true);
+        stage.setFullScreen(true);
     }
 }
