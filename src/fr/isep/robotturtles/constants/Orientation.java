@@ -1,9 +1,22 @@
 package fr.isep.robotturtles.constants;
 
 public enum Orientation {
-    DOWN, RIGHT, LEFT, UP;
+    DOWN (180.00),
+    RIGHT (90.00),
+    LEFT (270.00),
+    UP (0.00);
 
-    Orientation getRight(){
+    private final double angle;
+
+    Orientation(double angle) {
+        this.angle = angle;
+    }
+
+    public double getAngle() {
+        return angle;
+    }
+
+    public Orientation getRight(){
         switch (this){
             case DOWN:
                 return LEFT;
@@ -18,7 +31,7 @@ public enum Orientation {
         }
     }
 
-    Orientation getLeft(){
+    public Orientation getLeft(){
         switch (this){
             case DOWN:
                 return RIGHT;

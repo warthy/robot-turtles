@@ -5,9 +5,12 @@ import fr.isep.robotturtles.constants.*;
 import java.util.*;
 
 public class Player implements Pawn {
+    public static int PLAYER_START_ROW = 7;
+
     private Card[] deck = new Card[5];
     private LinkedList<Card> stack = new LinkedList<>();
     private List<Card> trash = new ArrayList<>();
+    private int jewelpoint;
 
     private Obstacle[] obstacleDeck = new Obstacle[5];
     private Boolean hasUsedBug = false;
@@ -15,13 +18,17 @@ public class Player implements Pawn {
     private PlayerColor color;
     private Orientation orientation;
 
-    // We only keep X coordinate as Y is always 0
+    // We only keep col coordinate as row is constant (PLAYER_START_ROW)
     private int startCoordinate;
-    // [X, Y]
+    // [row, col]
     private int[] coordinates = new int[2];
 
-    public Player(PlayerColor color){
+    public Player(PlayerColor color, int startCoordinate){
         this.color = color;
+        this.startCoordinate = startCoordinate;
+        setCoordinates(PLAYER_START_ROW, startCoordinate);
+
+
         orientation = Orientation.UP;
         stack.addAll(Collections.nCopies(18, new Card(CardType.BLUE)));
         stack.addAll(Collections.nCopies(8, new Card(CardType.YELLOW)));
@@ -51,12 +58,22 @@ public class Player implements Pawn {
         Collections.shuffle(trash);
     }
 
+    public void returnStartPosition(){
+        orientation = Orientation.UP;
+        coordinates[0] = PLAYER_START_ROW;
+        coordinates[1] = startCoordinate;
+    }
+
     public Card[] getDeck() {
         return deck;
     }
 
     public List<Card> getStack() {
         return stack;
+    }
+
+    public List<Card> getTrash() {
+        return trash;
     }
 
     public Obstacle[] getObstacleDeck() {
@@ -83,6 +100,11 @@ public class Player implements Pawn {
         return instructionsList;
     }
 
+    public void emptyInstructions(){
+        trash.addAll(instructionsList);
+        instructionsList.clear();
+    }
+
     public void discardCard(int cardIndex){
         trash.add( deck[cardIndex]);
         deck[cardIndex] = null;
@@ -90,11 +112,6 @@ public class Player implements Pawn {
 
     public PlayerColor getColor() {
         return color;
-    }
-
-
-    public void addInstruction(Card[] instructions){
-        instructionsList.addAll(Arrays.asList(instructions));
     }
 
     public Orientation getOrientation() {
@@ -109,10 +126,6 @@ public class Player implements Pawn {
         return startCoordinate;
     }
 
-    public void setStartCoordinate(int y) {
-        this.startCoordinate =  y;
-    }
-
     public PawnType getPawnType(){
         return PawnType.PLAYER;
     }
@@ -120,4 +133,19 @@ public class Player implements Pawn {
     public int[] getCoordinates() {
         return coordinates;
     }
+
+    public void setCoordinates(int row, int col) {
+        this.coordinates[0] = row;
+        this.coordinates[1] = col;
+    }
+
+    public int getJewelpoint() {
+        return jewelpoint;
+    }
+
+    public void setJewelpoint(int jewelpoint) {
+        this.jewelpoint = jewelpoint;
+    }
+
+
 }

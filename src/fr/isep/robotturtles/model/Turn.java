@@ -1,7 +1,7 @@
 package fr.isep.robotturtles.model;
 
+import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.List;
 
 public class Turn {
     private LinkedList<Player> players;
@@ -10,8 +10,8 @@ public class Turn {
     private boolean hasCompleteProgram = true;
     private boolean hasDiscard = false;
 
-    public Turn(List<Player> players){
-        this.players = new LinkedList<>(players);
+    public Turn(Player[] players){
+        this.players = new LinkedList<>(Arrays.asList(players));
         next();
     }
 
