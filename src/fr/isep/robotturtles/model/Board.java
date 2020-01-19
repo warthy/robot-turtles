@@ -1,6 +1,7 @@
 package fr.isep.robotturtles.model;
 
 import fr.isep.robotturtles.constants.ObstacleType;
+import fr.isep.robotturtles.constants.Orientation;
 import fr.isep.robotturtles.constants.PawnType;
 import fr.isep.robotturtles.constants.PlayerColor;
 
@@ -54,16 +55,55 @@ public class Board {
         }
     }
 
+    public void movePlayer(Player player, int row, int col){
+        int[] coord = player.getCoordinates();
+        try {
+            Pawn pawn = getGridElement(row, col);
+            if (pawn == null) {
+                grid[coord[0]][coord[1]] = null;
+                grid[row][col] = player;
+                player.setCoordinates(row, col);
+            } else {
+                switch (pawn.getPawnType()) {
+                    case PLAYER:
+                        Player p2 = (Player) pawn;
+                        Orientation orientation2 = p2.getOrientation();
+                        player.setOrientation(player.getOrientation().getRight().getRight());
+                        p2.setOrientation(orientation2.getRight().getRight());
+                        break;
+                    case OBSTACLE:
+                        player.setOrientation(player.getOrientation().getRight().getRight());
+                        break;
+                    case JEWEL:
+                        grid[coord[0]][coord[1]] = null;
+                        player.setJewelpoint(jewelmax);
+                        jewelmax--;
+                        break;
+                }
+
+            }
+        }catch (IndexOutOfBoundsException e){
+            grid[coord[0]][coord[1]] = null;
+            player.returnStartPosition();
+        }
+    }
+
+    public void restartPlayer(Player player){
+        int[] coord = player.getCoordinates();
+        grid[coord[0]][coord[1]] = null;
+        player.returnStartPosition();
+    }
+
     private boolean canPutObstacle(int x, int y, ObstacleType type) {
         return true;
     }
 
-    public boolean set(Pawn pawn, int x, int y) {
-        if ((grid[x][y] == null)
-                || (grid[x][y] != null && grid[x][y].getPawnType().equals(PawnType.JEWEL) && pawn.getPawnType().equals(PawnType.PLAYER))
-                || (pawn instanceof Obstacle && canPutObstacle(x, y, ((Obstacle) pawn).getType()))
+    public boolean set(Pawn pawn, int row, int col) {
+        if ((grid[row][col] == null)
+                || (grid[row][col] != null && grid[row][col].getPawnType().equals(PawnType.JEWEL) && pawn.getPawnType().equals(PawnType.PLAYER))
+                || (pawn instanceof Obstacle && canPutObstacle(row, col, ((Obstacle) pawn).getType()))
         ){
-            grid[x][y] = pawn;
+            grid[row][col] = pawn;
             return true;
         }
         return false;
@@ -75,13 +115,6 @@ public class Board {
 
     public Pawn getGridElement(int row, int col){
         return grid[row][col];
-    }
-
-    public int getJewelmax(){
-        return jewelmax;
-    }
-    public void setJewelmax(int jewelmaxvalue){
-        this.jewelmax = jewelmaxvalue;
     }
 
     public Player[] getPlayers() {
