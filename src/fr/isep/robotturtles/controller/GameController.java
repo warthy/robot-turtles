@@ -96,42 +96,44 @@ public class GameController implements Initializable {
                     case BLUE:
                         switch (orientation) {
                             case DOWN:
-                                board.movePlayer(player,coordinates[0] + 1, coordinates[1]);
+                                movePlayer(player, coordinates[0] + 1, coordinates[1]);
                                 break;
                             case RIGHT:
-                                board.movePlayer(player, coordinates[0], coordinates[1] + 1);
+                                movePlayer(player, coordinates[0], coordinates[1] + 1);
                                 break;
                             case LEFT:
-                                board.movePlayer(player, coordinates[0], coordinates[1] - 1);
+                                movePlayer(player, coordinates[0], coordinates[1] - 1);
                                 break;
                             case UP:
-                                board.movePlayer(player, coordinates[0] - 1, coordinates[1]);
+                                movePlayer(player, coordinates[0] - 1, coordinates[1]);
                                 break;
                         }
                         break;
                     case YELLOW:
                         player.setOrientation(orientation.getLeft());
+                        placePawn(player, coordinates[0], coordinates[1]);
                         break;
                     case PURPLE:
                         player.setOrientation((orientation.getRight()));
+                        placePawn(player, coordinates[0], coordinates[1]);
                         break;
                     case LASER:
                         switch (orientation) {
                             case DOWN:
                                 if (!(coordinates[0] + 1 > 7))
-                                    useLaser(coordinates[0], coordinates[1] + 1);
+                                    useLaser(player, coordinates[0], coordinates[1] + 1);
                                 break;
                             case RIGHT:
                                 if (!(coordinates[1] + 1 > 0))
-                                    useLaser(coordinates[0], coordinates[1] + 1);
+                                    useLaser(player, coordinates[0], coordinates[1] + 1);
                                 break;
                             case LEFT:
                                 if (!(coordinates[1] - 1 < 0))
-                                    useLaser(coordinates[0], coordinates[1] - 1);
+                                    useLaser(player, coordinates[0], coordinates[1] - 1);
                                 break;
                             case UP:
                                 if (!(coordinates[0] - 1 < 0))
-                                    useLaser(coordinates[0] - 1, coordinates[1]);
+                                    useLaser(player, coordinates[0] - 1, coordinates[1]);
                                 break;
                         }
                         break;
@@ -199,31 +201,77 @@ public class GameController implements Initializable {
         }
     }
 
-    private void useLaser(int row, int col){
+    private void useLaser(Player player, int row, int col) {
         Pawn pawn = board.getGridElement(row, col);
         PawnType pawntype = pawn.getPawnType();
+        int[] coord;
         switch (pawntype) {
             case OBSTACLE:
                 if (((Obstacle) pawn).getType() == ICE)
-                    board.set(null, row, col);
+                    placePawn(null, row, col);
                 break;
             case PLAYER:
                 Player p2 = (Player) pawn;
+                coord = p2.getCoordinates();
                 if (PLAYER_COUNT == 2) {
                     p2.setOrientation(p2.getOrientation().getRight().getRight());
+                    //TODO va poser probleme
+                    placePawn(p2, coord[0], coord[1]);
                 } else {
                     p2.returnStartPosition();
+                    placePawn(null, coord[0], coord[1]);
+                    placePawn(p2, Player.PLAYER_START_ROW, p2.getStartCoordinate());
                 }
                 break;
             case JEWEL:
-                board.restartPlayer(turn.getPlayer());
+                coord = player.getCoordinates();
+                player.returnStartPosition();
+                placePawn(null, coord[0], coord[1]);
+                placePawn(player, Player.PLAYER_START_ROW, player.getStartCoordinate());
                 break;
+        }
+    }
+
+    private void movePlayer(Player player, int row, int col) {
+        int[] coord = player.getCoordinates();
+        try {
+            Pawn pawn = board.getGridElement(row, col);
+            if (pawn == null) {
+                placePawn(null, coord[0], coord[1]);
+                placePawn(player, row, col);
+                player.setCoordinates(row, col);
+            } else {
+                switch (pawn.getPawnType()) {
+                    case PLAYER:
+                        Player facingPlayer = (Player) pawn;
+                        //TODO va poser probleme
+                        player.setOrientation(player.getOrientation().getRight().getRight());
+                        facingPlayer.setOrientation(facingPlayer.getOrientation().getRight().getRight());
+                        break;
+                    case OBSTACLE:
+                        //TODO va poser probleme
+                        player.setOrientation(player.getOrientation().getRight().getRight());
+                        break;
+                    case JEWEL:
+                        board.removePawn(coord[0], coord[1]);
+                        placePawn(null, coord[0], coord[1]);
+                        player.setJewelpoint(board.getJewelMax());
+                        //TODO decrease JewelMax
+                        break;
+                }
+
+            }
+        } catch (IndexOutOfBoundsException e) {
+            player.returnStartPosition();
+            placePawn(null, coord[0], coord[1]);
+            placePawn(player, Player.PLAYER_START_ROW, player.getStartCoordinate());
+
         }
     }
 
     private boolean buildWall(int deckIndex, ObstacleType type, int row, int col) {
         Obstacle obstacle = new Obstacle(type);
-        if (board.set(obstacle, row, col)) {
+        if (board.setPawn(obstacle, row, col)) {
             turn.getPlayer().removeFromObstacleDeck(deckIndex);
             displayObstacleDeck();
             placePawn(obstacle, row, col);
@@ -334,6 +382,7 @@ public class GameController implements Initializable {
             event.acceptTransferModes(TransferMode.MOVE);
         });
         if (pawn == null) {
+            board.removePawn(row, col);
             pane.setOnDragDropped(event -> {
                 Dragboard db = event.getDragboard();
                 boolean success = false;
@@ -357,7 +406,7 @@ public class GameController implements Initializable {
                 event.consume();
             });
 
-        } else {
+        } else if (pawn == board.getGridElement(row, col) || board.setPawn(pawn, row, col)) {
             switch (pawn.getPawnType()) {
                 case PLAYER:
                     pane.setId("turtle-" + ((Player) pawn).getColor().name().toLowerCase());
