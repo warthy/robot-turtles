@@ -26,7 +26,7 @@ public class Player implements Pawn {
     public Player(PlayerColor color, int startCoordinate){
         this.color = color;
         this.startCoordinate = startCoordinate;
-        setCoordinates(startCoordinate, PLAYER_START_ROW);
+        setCoordinates(PLAYER_START_ROW, startCoordinate);
 
 
         orientation = Orientation.UP;
@@ -100,6 +100,11 @@ public class Player implements Pawn {
         return instructionsList;
     }
 
+    public void emptyInstructions(){
+        trash.addAll(instructionsList);
+        instructionsList.clear();
+    }
+
     public void discardCard(int cardIndex){
         trash.add( deck[cardIndex]);
         deck[cardIndex] = null;
@@ -107,11 +112,6 @@ public class Player implements Pawn {
 
     public PlayerColor getColor() {
         return color;
-    }
-
-
-    public void addInstruction(Card[] instructions){
-        instructionsList.addAll(Arrays.asList(instructions));
     }
 
     public Orientation getOrientation() {
@@ -124,10 +124,6 @@ public class Player implements Pawn {
 
     public int getStartCoordinate() {
         return startCoordinate;
-    }
-
-    public void setStartCoordinate(int y) {
-        this.startCoordinate =  y;
     }
 
     public PawnType getPawnType(){

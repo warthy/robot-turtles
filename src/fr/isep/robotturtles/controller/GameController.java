@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -139,7 +140,11 @@ public class GameController implements Initializable {
                         break;
                 }
             });
+
+            player.emptyInstructions();
+            displayProgramStack();
             hasPlay(false);
+            turn.next();
         }
     }
 
@@ -184,7 +189,7 @@ public class GameController implements Initializable {
         Scene menuScene = new Scene(root);
 
         stage.setScene(menuScene);
-        stage.setFullScreen(true);
+        //stage.setFullScreen(true);
     }
 
     @FXML
@@ -405,11 +410,12 @@ public class GameController implements Initializable {
                 event.setDropCompleted(success);
                 event.consume();
             });
-
         } else if (pawn == board.getGridElement(row, col) || board.setPawn(pawn, row, col)) {
             switch (pawn.getPawnType()) {
                 case PLAYER:
-                    pane.setId("turtle-" + ((Player) pawn).getColor().name().toLowerCase());
+                    Player p = (Player) pawn;
+                    pane.setRotate(p.getOrientation().getAngle());
+                    pane.setId("turtle-" + p.getColor().name().toLowerCase());
                     break;
                 case OBSTACLE:
                     pane.getStyleClass().add("obstacle-" + ((Obstacle) pawn).getType().name().toLowerCase());
@@ -419,6 +425,13 @@ public class GameController implements Initializable {
                     break;
             }
         }
+        for(Node node : grid.getChildren()) {
+            if(GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == col) {
+                grid.getChildren().remove(node);
+                break;
+            }
+        }
+
         grid.add(pane, col, row);
     }
 

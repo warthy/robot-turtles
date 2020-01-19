@@ -21,7 +21,7 @@ public class Main extends Application {
         primaryStage.setOnHidden(e -> System.exit(0));
         primaryStage.setScene(scene);
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("resources/images/logo.png")));
-        primaryStage.setFullScreen(true);
+        //primaryStage.setFullScreen(true);
         primaryStage.setMinWidth(1000);
         primaryStage.setMinHeight(600);
         primaryStage.show();
