@@ -22,7 +22,7 @@
    <children>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <children>
-            <Button mnemonicParsing="false" prefHeight="75.0" prefWidth="250.0" styleClass="game-button" text="Rejouer" textAlignment="CENTER" onAction="#backMenu">
+            <Button mnemonicParsing="false" prefHeight="75.0" prefWidth="250.0" styleClass="game-button" text="Rejouer" textAlignment="CENTER" onAction="#switchToMenu">
                <HBox.margin>
                   <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                </HBox.margin>

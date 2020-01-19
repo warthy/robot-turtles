@@ -10,7 +10,7 @@ public class Player implements Pawn {
     private Card[] deck = new Card[5];
     private LinkedList<Card> stack = new LinkedList<>();
     private List<Card> trash = new ArrayList<>();
-    private int jewelpoint;
+    private int jewelPoint = -1;
 
     private Obstacle[] obstacleDeck = new Obstacle[5];
     private Boolean hasUsedBug = false;
@@ -139,12 +139,12 @@ public class Player implements Pawn {
         this.coordinates[1] = col;
     }
 
-    public int getJewelpoint() {
-        return jewelpoint;
+    public int getJewelPoint() {
+        return jewelPoint;
     }
 
-    public void setJewelpoint(int jewelpoint) {
-        this.jewelpoint = jewelpoint;
+    public void setJewelPoint(int jewelPoint) {
+        this.jewelPoint = jewelPoint;
     }
 
 

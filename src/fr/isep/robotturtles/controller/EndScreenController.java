@@ -1,6 +1,7 @@
 package fr.isep.robotturtles.controller;
 
 import fr.isep.robotturtles.Main;
+import fr.isep.robotturtles.model.Player;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,8 +17,12 @@ public class EndScreenController {
 
     public GridPane grid = null;
 
+    public static void initEndScreen(Player[] players){
+
+    }
+
     @FXML
-    public void backMenu(Event e) throws IOException {
+    public void switchToMenu(Event e) throws IOException {
         Scene menu = grid.getScene();
         Window window = menu.getWindow();
         Stage stage = (Stage) window;

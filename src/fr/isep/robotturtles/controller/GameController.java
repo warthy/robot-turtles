@@ -87,7 +87,7 @@ public class GameController implements Initializable {
     }
 
     @FXML
-    public void executeProgram(Event e) {
+    public void executeProgram(Event e){
         if (!turn.hasPlayed()) {
             Player player = turn.getPlayer();
             player.getInstructionsList().forEach(card -> {
@@ -180,9 +180,9 @@ public class GameController implements Initializable {
     }
 
     @FXML
-    public void leaveGame(Event e) throws IOException {
-        Scene menu = grid.getScene();
-        Window window = menu.getWindow();
+    public void switchToMenu(Event e) throws IOException {
+        Scene game = grid.getScene();
+        Window window = game.getWindow();
         Stage stage = (Stage) window;
 
         Parent root = FXMLLoader.load(Main.class.getResource("view/Menu.fxml"));
@@ -195,6 +195,19 @@ public class GameController implements Initializable {
     @FXML
     public void quit(Event e) {
         System.exit(0);
+    }
+
+    private void switchToEndScreen() throws IOException {
+        Scene game = grid.getScene();
+        Window window = game.getWindow();
+        Stage stage = (Stage)window;
+
+        EndScreenController.initEndScreen(board.getPlayers());
+        Parent root = FXMLLoader.load(Main.class.getResource("view/EndScreen.fxml"));
+        Scene endScreenScene = new Scene(root, 1000 , 600);
+
+        stage.setScene(endScreenScene);
+        //stage.setFullScreen(true);
     }
 
     private void hasPlay(boolean usedCard) {
@@ -220,7 +233,6 @@ public class GameController implements Initializable {
                 coord = p2.getCoordinates();
                 if (PLAYER_COUNT == 2) {
                     p2.setOrientation(p2.getOrientation().getRight().getRight());
-                    //TODO va poser probleme
                     placePawn(p2, coord[0], coord[1]);
                 } else {
                     p2.returnStartPosition();
@@ -249,22 +261,30 @@ public class GameController implements Initializable {
                 switch (pawn.getPawnType()) {
                     case PLAYER:
                         Player facingPlayer = (Player) pawn;
-                        //TODO va poser probleme
                         player.setOrientation(player.getOrientation().getRight().getRight());
                         facingPlayer.setOrientation(facingPlayer.getOrientation().getRight().getRight());
+
+                        placePawn(player, coord[0], coord[1]);
+                        placePawn(player, facingPlayer.getCoordinates()[0], facingPlayer.getCoordinates()[1]);
                         break;
                     case OBSTACLE:
-                        //TODO va poser probleme
+                        placePawn(player, coord[0], coord[1]);
                         player.setOrientation(player.getOrientation().getRight().getRight());
                         break;
                     case JEWEL:
                         board.removePawn(coord[0], coord[1]);
                         placePawn(null, coord[0], coord[1]);
-                        player.setJewelpoint(board.getJewelMax());
-                        //TODO decrease JewelMax
+                        player.setJewelPoint(board.getJewelMax());
+                        board.decreaseJewelMax();
                         break;
                 }
-
+                if(board.getJewelMax() == -1){
+                    try {
+                        switchToEndScreen();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         } catch (IndexOutOfBoundsException e) {
             player.returnStartPosition();
