@@ -2,36 +2,37 @@ package fr.isep.robotturtles.model;
 
 import fr.isep.robotturtles.constants.ObstacleType;
 import fr.isep.robotturtles.constants.PawnType;
+import fr.isep.robotturtles.constants.PlayerColor;
 
-import java.util.List;
 
 public class Board {
-    // [x][y]
+    // [row][col]
     Pawn[][] grid = new Pawn[8][8];
+    private Player[] players;
+    private int jewelmax;
 
-    public Board(List<Player> players) {
-        players.toArray(new Player[0]);
-
-        switch (players.size()) {
+    public Board(int playersCount) {
+        PlayerColor[] colors = PlayerColor.values();
+        players = new Player[playersCount];
+        switch (playersCount) {
             case 2:
-                players.get(0).setStartCoordinate(1);
-                players.get(1).setStartCoordinate(5);
+                players[0] = new Player(colors[0], 1);
+                players[1] = new Player(colors[1], 5);
                 grid[0][3] = new Jewel();
                 break;
             case 3:
-                players.get(0).setStartCoordinate(0);
-                players.get(1).setStartCoordinate(3);
-                players.get(2).setStartCoordinate(6);
-
+                players[0] = new Player(colors[0], 0);
+                players[1] = new Player(colors[1], 3);
+                players[2] = new Player(colors[2], 6);
                 grid[0][0] = new Jewel();
                 grid[0][3] = new Jewel();
                 grid[0][6] = new Jewel();
                 break;
             case 4:
-                players.get(0).setStartCoordinate(0);
-                players.get(1).setStartCoordinate(2);
-                players.get(2).setStartCoordinate(5);
-                players.get(3).setStartCoordinate(7);
+                players[0] = new Player(colors[0], 0);
+                players[1] = new Player(colors[1], 3);
+                players[2] = new Player(colors[2], 5);
+                players[3] = new Player(colors[3], 7);
 
                 grid[0][1] = new Jewel();
                 grid[0][6] = new Jewel();
@@ -45,7 +46,7 @@ public class Board {
         for (Player player : players) {
             grid[grid.length - 1][player.getStartCoordinate()] = player;
         }
-        if (players.size() <= 3) {
+        if (playersCount <= 3) {
             // Add wall on right side of the board
             for (Pawn[] lines : grid) {
                 lines[lines.length - 1] = new Obstacle(ObstacleType.STONE);
@@ -72,7 +73,18 @@ public class Board {
         return grid;
     }
 
-    public Pawn getGridElement(int x, int y){
-        return grid[x][y];
+    public Pawn getGridElement(int row, int col){
+        return grid[row][col];
+    }
+
+    public int getJewelmax(){
+        return jewelmax;
+    }
+    public void setJewelmax(int jewelmaxvalue){
+        this.jewelmax = jewelmaxvalue;
+    }
+
+    public Player[] getPlayers() {
+        return players;
     }
 }

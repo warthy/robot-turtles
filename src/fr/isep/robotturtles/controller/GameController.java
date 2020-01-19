@@ -1,9 +1,7 @@
 package fr.isep.robotturtles.controller;
 
 import fr.isep.robotturtles.*;
-import fr.isep.robotturtles.constants.CardType;
-import fr.isep.robotturtles.constants.ObstacleType;
-import fr.isep.robotturtles.constants.PlayerColor;
+import fr.isep.robotturtles.constants.*;
 import fr.isep.robotturtles.model.*;
 import fr.isep.robotturtles.model.Obstacle;
 import javafx.event.Event;
@@ -25,12 +23,12 @@ import javafx.stage.Window;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
+import static fr.isep.robotturtles.constants.ObstacleType.ICE;
+
 public class GameController implements Initializable {
-    static List<Player> players;
+    static int PLAYER_COUNT = 0;
     static Board board;
     private Turn turn;
 
@@ -42,17 +40,14 @@ public class GameController implements Initializable {
     public HBox programStack = null;
 
     static void initGame(int playerSize) {
-        players = new ArrayList<>();
-        for (int i = 0; i < playerSize; i++) {
-            players.add(new Player(PlayerColor.values()[i]));
-        }
-        board = new Board(players);
+        PLAYER_COUNT = playerSize;
+        board = new Board(playerSize);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         renderBoard();
-        turn = new Turn(players);
+        turn = new Turn(board.getPlayers());
         labelTurn.setText("Tour: tortue " + turn.getPlayer().getColor().name());
         displayDeck();
         displayObstacleDeck();
@@ -92,8 +87,232 @@ public class GameController implements Initializable {
 
     @FXML
     public void executeProgram(Event e) {
+        if (!turn.hasPlayed()) {
+            Player player = turn.getPlayer();
+            player.getInstructionsList().forEach(card -> {
+                Orientation orientation = turn.getPlayer().getOrientation();
+                int[] coordinates = turn.getPlayer().getCoordinates();
+                switch (card.getType()) {
+                    case BLUE:
+                        switch (orientation) {
+                            case DOWN:
+                                if (coordinates[0] + 1 > 7) {
+                                    player.returnStartPosition();
+                                } else {
+                                    Pawn pawn = board.getGridElement(coordinates[0] + 1, coordinates[1]);
+                                    if (pawn == null) {
+                                        player.setCoordinates(coordinates[0] + 1, coordinates[1]);
+                                    } else {
+                                        switch (pawn.getPawnType()) {
+                                            case PLAYER:
+                                                Player p2 = (Player) pawn;
+                                                Orientation orientation2 = p2.getOrientation();
+                                                player.setOrientation(orientation.getRight().getRight());
+                                                p2.setOrientation(orientation2.getRight().getRight());
+                                                break;
+                                            case OBSTACLE:
+                                                player.setOrientation(orientation.getRight().getRight());
+                                                break;
+                                            case JEWEL:
+                                                int jewelMax = board.getJewelmax();
+                                                player.setJewelpoint(jewelMax);
+                                                board.setJewelmax(jewelMax - 1);
+                                                break;
+                                        }
+                                    }
+                                }
+                                break;
+                            case RIGHT:
+                                if (coordinates[1] + 1 > 7) {
+                                    player.returnStartPosition();
+                                } else {
+                                    Pawn pawn = board.getGridElement(coordinates[0], coordinates[1] + 1);
+                                    if (pawn == null) {
+                                        player.setCoordinates(coordinates[0], coordinates[1] + 1);
+                                    } else {
+                                        switch (pawn.getPawnType()) {
+                                            case PLAYER:
+                                                Player p2 = (Player) pawn;
+                                                Orientation orientation2 = p2.getOrientation();
+                                                player.setOrientation((orientation.getRight().getRight()));
+                                                p2.setOrientation(orientation2.getRight().getRight());
+                                                break;
+                                            case OBSTACLE:
+                                                player.setOrientation(orientation.getRight().getRight());
+                                                break;
+                                            case JEWEL:
+                                                int jewelMax = board.getJewelmax();
+                                                player.setJewelpoint(jewelMax);
+                                                board.setJewelmax(jewelMax - 1);
+                                                break;
+                                        }
+                                    }
+                                }
+                                break;
+                            case LEFT:
+                                if (coordinates[1] - 1 < 0) {
+                                    player.returnStartPosition();
+                                } else {
+                                    Pawn pawn = board.getGridElement(coordinates[0], coordinates[1] - 1);
+                                    if (pawn == null) {
+                                        player.setCoordinates(coordinates[0], coordinates[1] - 1);
 
-        hasPlay(false);
+                                    } else {
+                                        switch (pawn.getPawnType()) {
+                                            case PLAYER:
+                                                Player p2 = (Player) pawn;
+                                                Orientation orientation2 = p2.getOrientation();
+                                                player.setOrientation((orientation.getRight().getRight()));
+                                                p2.setOrientation(orientation2.getRight().getRight());
+                                                break;
+                                            case OBSTACLE:
+                                                player.setOrientation(orientation.getRight().getRight());
+                                                break;
+                                            case JEWEL:
+                                                int jewelMax = board.getJewelmax();
+                                                player.setJewelpoint(jewelMax);
+                                                board.setJewelmax(jewelMax - 1);
+                                                break;
+                                        }
+                                    }
+                                }
+                                break;
+                            case UP:
+                                if (coordinates[0] - 1 < 0) {
+                                    player.returnStartPosition();
+                                } else {
+                                    Pawn pawn = board.getGridElement(coordinates[0] - 1, coordinates[1]);
+                                    if (pawn == null) {
+                                        player.setCoordinates(coordinates[0] - 1, coordinates[1]);
+                                    } else {
+                                        switch (pawn.getPawnType()) {
+                                            case PLAYER:
+                                                Player p2 = (Player) pawn;
+                                                Orientation orientation2 = p2.getOrientation();
+                                                player.setOrientation((orientation.getRight().getRight()));
+                                                p2.setOrientation(orientation2.getRight().getRight());
+                                                break;
+                                            case OBSTACLE:
+                                                player.setOrientation(orientation.getRight().getRight());
+                                                break;
+                                            case JEWEL:
+                                                int jewelMax = board.getJewelmax();
+                                                player.setJewelpoint(jewelMax);
+                                                board.setJewelmax(jewelMax - 1);
+                                                break;
+                                        }
+                                    }
+                                }
+                                break;
+                        }
+                        break;
+                    case YELLOW:
+                        player.setOrientation(orientation.getLeft());
+                        break;
+                    case PURPLE:
+                        player.setOrientation((orientation.getRight()));
+                        break;
+                    case LASER:
+                        switch (orientation) {
+                            case DOWN:
+                                if (!(coordinates[0] + 1 > 7)) {
+                                    Pawn pawn = board.getGridElement(coordinates[0] + 1, coordinates[1]);
+                                    PawnType pawntype = pawn.getPawnType();
+                                    switch (pawntype) {
+                                        case OBSTACLE:
+                                            if (((Obstacle) pawn).getType() == ICE)
+                                                board.set(null, coordinates[0] + 1, coordinates[1]);
+                                            break;
+                                        case PLAYER:
+                                            Player p2 = (Player) pawn;
+                                            if (PLAYER_COUNT == 2) {
+                                                p2.setOrientation(p2.getOrientation().getRight().getRight());
+                                            } else {
+                                                p2.returnStartPosition();
+                                            }
+                                            break;
+                                        case JEWEL:
+                                            player.returnStartPosition();
+                                            break;
+                                    }
+                                }
+                                break;
+                            case RIGHT:
+                                if (!(coordinates[1] + 1 > 7)) {
+                                    Pawn pawn = board.getGridElement(coordinates[0], coordinates[1] + 1);
+                                    PawnType pawntype = pawn.getPawnType();
+                                    switch (pawntype) {
+                                        case OBSTACLE:
+                                            if (((Obstacle) pawn).getType() == ICE)
+                                                board.set(null, coordinates[0], coordinates[1] + 1);
+                                            break;
+                                        case PLAYER:
+                                            Player p2 = (Player) pawn;
+                                            if (PLAYER_COUNT == 2) {
+                                                p2.setOrientation(p2.getOrientation().getRight().getRight());
+                                            } else {
+                                                p2.returnStartPosition();
+                                            }
+                                            break;
+                                        case JEWEL:
+                                            player.returnStartPosition();
+                                            break;
+                                    }
+                                }
+                                break;
+                            case LEFT:
+                                if (!(coordinates[1] - 1 < 0)) {
+                                    Pawn pawn = board.getGridElement(coordinates[0], coordinates[1] - 1);
+                                    PawnType pawntype = pawn.getPawnType();
+                                    switch (pawntype) {
+                                        case OBSTACLE:
+                                            if (((Obstacle) pawn).getType() == ICE)
+                                                board.set(null, coordinates[0], coordinates[1] - 1);
+                                            break;
+                                        case PLAYER:
+                                            Player p2 = (Player) pawn;
+                                            if (PLAYER_COUNT == 2) {
+                                                p2.setOrientation(p2.getOrientation().getRight().getRight());
+                                            } else {
+                                                p2.returnStartPosition();
+                                            }
+                                            break;
+                                        case JEWEL:
+                                            player.returnStartPosition();
+                                            break;
+                                    }
+                                    break;
+                                }
+                                break;
+                            case UP:
+                                if (!(coordinates[0] - 1 < 0)) {
+                                    Pawn pawn = board.getGridElement(coordinates[0] - 1, coordinates[1]);
+                                    PawnType pawntype = pawn.getPawnType();
+                                    switch (pawntype) {
+                                        case OBSTACLE:
+                                            if (((Obstacle) pawn).getType() == ICE)
+                                                board.set(null, coordinates[0] - 1, coordinates[1]);
+                                            break;
+                                        case PLAYER:
+                                            Player p2 = (Player) pawn;
+                                            if (PLAYER_COUNT == 2) {
+                                                p2.setOrientation(p2.getOrientation().getRight().getRight());
+                                            } else {
+                                                p2.returnStartPosition();
+                                            }
+                                            break;
+                                        case JEWEL:
+                                            player.returnStartPosition();
+                                            break;
+                                    }
+                                }
+                                break;
+                        }
+                        break;
+                }
+            });
+            hasPlay(false);
+        }
     }
 
     @FXML

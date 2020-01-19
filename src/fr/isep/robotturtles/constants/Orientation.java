@@ -3,7 +3,7 @@ package fr.isep.robotturtles.constants;
 public enum Orientation {
     DOWN, RIGHT, LEFT, UP;
 
-    Orientation getRight(){
+    public Orientation getRight(){
         switch (this){
             case DOWN:
                 return LEFT;
@@ -18,7 +18,7 @@ public enum Orientation {
         }
     }
 
-    Orientation getLeft(){
+    public Orientation getLeft(){
         switch (this){
             case DOWN:
                 return RIGHT;
