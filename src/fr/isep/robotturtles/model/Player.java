@@ -4,13 +4,13 @@ import fr.isep.robotturtles.constants.*;
 
 import java.util.*;
 
-public class Player implements Pawn {
-    public static int PLAYER_START_ROW = 7;
+public class Player implements Pawn, Comparable {
+    public static final int PLAYER_START_ROW = 7;
 
     private Card[] deck = new Card[5];
     private LinkedList<Card> stack = new LinkedList<>();
     private List<Card> trash = new ArrayList<>();
-    private int jewelPoint = -1;
+    private int jewelPoint = 0;
 
     private Obstacle[] obstacleDeck = new Obstacle[5];
     private Boolean hasUsedBug = false;
@@ -148,4 +148,8 @@ public class Player implements Pawn {
     }
 
 
+    @Override
+    public int compareTo(Object o) {
+        return this.getJewelPoint() > ((Player) o).getJewelPoint() ? -1: 1;
+    }
 }

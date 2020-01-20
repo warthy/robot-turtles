@@ -87,7 +87,7 @@ public class GameController implements Initializable {
     }
 
     @FXML
-    public void executeProgram(Event e){
+    public void executeProgram(Event e) {
         if (!turn.hasPlayed()) {
             Player player = turn.getPlayer();
             player.getInstructionsList().forEach(card -> {
@@ -144,7 +144,7 @@ public class GameController implements Initializable {
             player.emptyInstructions();
             displayProgramStack();
             hasPlay(false);
-            turn.next();
+            nextTurn(e);
         }
     }
 
@@ -200,11 +200,11 @@ public class GameController implements Initializable {
     private void switchToEndScreen() throws IOException {
         Scene game = grid.getScene();
         Window window = game.getWindow();
-        Stage stage = (Stage)window;
+        Stage stage = (Stage) window;
 
         EndScreenController.initEndScreen(board.getPlayers());
         Parent root = FXMLLoader.load(Main.class.getResource("view/EndScreen.fxml"));
-        Scene endScreenScene = new Scene(root, 1000 , 600);
+        Scene endScreenScene = new Scene(root, 1000, 600);
 
         stage.setScene(endScreenScene);
         //stage.setFullScreen(true);
@@ -221,37 +221,40 @@ public class GameController implements Initializable {
 
     private void useLaser(Player player, int row, int col) {
         Pawn pawn = board.getGridElement(row, col);
-        PawnType pawntype = pawn.getPawnType();
-        int[] coord;
-        switch (pawntype) {
-            case OBSTACLE:
-                if (((Obstacle) pawn).getType() == ICE)
-                    placePawn(null, row, col);
-                break;
-            case PLAYER:
-                Player p2 = (Player) pawn;
-                coord = p2.getCoordinates();
-                if (PLAYER_COUNT == 2) {
-                    p2.setOrientation(p2.getOrientation().getRight().getRight());
-                    placePawn(p2, coord[0], coord[1]);
-                } else {
-                    p2.returnStartPosition();
+        if(pawn != null) {
+            PawnType pawntype = pawn.getPawnType();
+            int[] coord;
+            switch (pawntype) {
+                case OBSTACLE:
+                    if (((Obstacle) pawn).getType() == ICE)
+                        placePawn(null, row, col);
+                    break;
+                case PLAYER:
+                    Player p2 = (Player) pawn;
+                    coord = p2.getCoordinates();
+                    if (PLAYER_COUNT == 2) {
+                        p2.setOrientation(p2.getOrientation().getRight().getRight());
+                        placePawn(p2, coord[0], coord[1]);
+                    } else {
+                        p2.returnStartPosition();
+                        placePawn(null, coord[0], coord[1]);
+                        placePawn(p2, Player.PLAYER_START_ROW, p2.getStartCoordinate());
+                    }
+                    break;
+                case JEWEL:
+                    coord = player.getCoordinates();
+                    player.returnStartPosition();
                     placePawn(null, coord[0], coord[1]);
-                    placePawn(p2, Player.PLAYER_START_ROW, p2.getStartCoordinate());
-                }
-                break;
-            case JEWEL:
-                coord = player.getCoordinates();
-                player.returnStartPosition();
-                placePawn(null, coord[0], coord[1]);
-                placePawn(player, Player.PLAYER_START_ROW, player.getStartCoordinate());
-                break;
+                    placePawn(player, Player.PLAYER_START_ROW, player.getStartCoordinate());
+                    break;
+            }
         }
     }
 
     private void movePlayer(Player player, int row, int col) {
         int[] coord = player.getCoordinates();
         try {
+            // Throw exception if element is out of the array
             Pawn pawn = board.getGridElement(row, col);
             if (pawn == null) {
                 placePawn(null, coord[0], coord[1]);
@@ -265,7 +268,7 @@ public class GameController implements Initializable {
                         facingPlayer.setOrientation(facingPlayer.getOrientation().getRight().getRight());
 
                         placePawn(player, coord[0], coord[1]);
-                        placePawn(player, facingPlayer.getCoordinates()[0], facingPlayer.getCoordinates()[1]);
+                        placePawn(facingPlayer, facingPlayer.getCoordinates()[0], facingPlayer.getCoordinates()[1]);
                         break;
                     case OBSTACLE:
                         placePawn(player, coord[0], coord[1]);
@@ -278,7 +281,7 @@ public class GameController implements Initializable {
                         board.decreaseJewelMax();
                         break;
                 }
-                if(board.getJewelMax() == -1){
+                if (board.getJewelMax() == 0) {
                     try {
                         switchToEndScreen();
                     } catch (IOException e) {
@@ -288,9 +291,8 @@ public class GameController implements Initializable {
             }
         } catch (IndexOutOfBoundsException e) {
             player.returnStartPosition();
-            placePawn(null, coord[0], coord[1]);
             placePawn(player, Player.PLAYER_START_ROW, player.getStartCoordinate());
-
+            placePawn(null, coord[0], coord[1]);
         }
     }
 
@@ -376,6 +378,8 @@ public class GameController implements Initializable {
 
     private void placePawn(Pawn pawn, int row, int col) {
         AnchorPane pane = new AnchorPane();
+        pane.setId("r"+row+"c"+col);
+
         pane.getStyleClass().add("pawn");
         pane.setOnDragOver(event -> {
             Dragboard db = event.getDragboard();
@@ -435,7 +439,7 @@ public class GameController implements Initializable {
                 case PLAYER:
                     Player p = (Player) pawn;
                     pane.setRotate(p.getOrientation().getAngle());
-                    pane.setId("turtle-" + p.getColor().name().toLowerCase());
+                    pane.getStyleClass().add("turtle-" + p.getColor().name().toLowerCase());
                     break;
                 case OBSTACLE:
                     pane.getStyleClass().add("obstacle-" + ((Obstacle) pawn).getType().name().toLowerCase());
@@ -445,13 +449,13 @@ public class GameController implements Initializable {
                     break;
             }
         }
-        for(Node node : grid.getChildren()) {
-            if(GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == col) {
+
+        for (Node node : grid.getChildren()) {
+            if (node != null && node.getId() != null && node.getId().equals("r"+row+"c"+col)) {
                 grid.getChildren().remove(node);
                 break;
             }
         }
-
         grid.add(pane, col, row);
     }
 

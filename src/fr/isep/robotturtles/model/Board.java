@@ -92,6 +92,6 @@ public class Board {
     }
 
     public void decreaseJewelMax() {
-        --this.jewelMax;
+        this.jewelMax--;
     }
 }

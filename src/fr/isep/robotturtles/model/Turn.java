@@ -19,7 +19,7 @@ public class Turn {
         if(hasPlayed){
             do {
                 player =  players.remove();
-            } while (player.getJewelPoint() != -1);
+            } while (player.getJewelPoint() != 0);
 
             players.add(player);
 
