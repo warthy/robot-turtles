@@ -144,7 +144,6 @@ public class GameController implements Initializable {
             player.emptyInstructions();
             displayProgramStack();
             hasPlay(false);
-            nextTurn(e);
         }
     }
 
@@ -290,9 +289,10 @@ public class GameController implements Initializable {
                 }
             }
         } catch (IndexOutOfBoundsException e) {
+            placePawn(null, coord[0], coord[1]);
+
             player.returnStartPosition();
             placePawn(player, Player.PLAYER_START_ROW, player.getStartCoordinate());
-            placePawn(null, coord[0], coord[1]);
         }
     }
 

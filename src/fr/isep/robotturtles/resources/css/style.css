@@ -107,6 +107,7 @@
 }
 
 .scoreline {
+    -fx-fill: white;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-font-size: 20;

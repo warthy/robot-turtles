@@ -23,7 +23,7 @@ public class EndScreenController implements Initializable {
     static Player[] ranking;
 
 
-    public GridPane grid = null;
+    public GridPane endGrid = null;
     public VBox scoreboard = null;
 
     public static void initEndScreen(Player[] players){
@@ -33,17 +33,18 @@ public class EndScreenController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        int count = 0;
+        int count = 1;
         for(Player p: ranking){
             Text scoreline = new Text(count+"-"+p.getColor().name()+"\t\t\t\t\t\t"+ p.getJewelPoint()+"pts");
             scoreline.getStyleClass().add("scoreline");
             scoreboard.getChildren().add(scoreline);
+            count++;
         }
     }
 
     @FXML
     public void switchToMenu(Event e) throws IOException {
-        Scene menu = grid.getScene();
+        Scene menu = endGrid.getScene();
         Window window = menu.getWindow();
         Stage stage = (Stage) window;
 

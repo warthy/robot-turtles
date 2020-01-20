@@ -6,7 +6,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane id="game" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../resources/css/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.isep.robotturtles.controller.EndScreenController">
+<GridPane fx:id="endGrid" id="grid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+          minWidth="-Infinity"
+          prefHeight="400.0" prefWidth="600.0" stylesheets="@../resources/css/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.isep.robotturtles.controller.EndScreenController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="600.0" minWidth="10.0" percentWidth="20.0" prefWidth="70.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="534.0" minWidth="0.0" percentWidth="60.0" prefWidth="530.0" />
