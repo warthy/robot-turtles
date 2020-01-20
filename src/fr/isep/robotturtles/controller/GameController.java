@@ -220,7 +220,22 @@ public class GameController implements Initializable {
 
     private void useLaser(Player player, int row, int col) {
         Pawn pawn = board.getGridElement(row, col);
-        if(pawn != null) {
+        if(pawn == null) {
+            switch (player.getOrientation()){
+                case DOWN :
+                    if (!(row + 1 > 7)) useLaser(player, row + 1, col);
+                    break;
+                case RIGHT :
+                    if (!(col + 1 > 7)) useLaser(player, row, col + 1);
+                    break;
+                case LEFT :
+                    if (!(col - 1 < 0)) useLaser(player, row, col - 1);
+                    break;
+                case UP :
+                    if(!(row - 1 < 0)) useLaser(player, row - 1, col);
+                    break;
+            }
+        }else {
             PawnType pawntype = pawn.getPawnType();
             int[] coord;
             switch (pawntype) {
