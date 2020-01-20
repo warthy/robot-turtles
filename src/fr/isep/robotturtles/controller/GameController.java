@@ -122,10 +122,10 @@ public class GameController implements Initializable {
                         switch (orientation) {
                             case DOWN:
                                 if (!(coordinates[0] + 1 > 7))
-                                    useLaser(player, coordinates[0], coordinates[1] + 1);
+                                    useLaser(player, coordinates[0] + 1, coordinates[1]);
                                 break;
                             case RIGHT:
-                                if (!(coordinates[1] + 1 > 0))
+                                if (!(coordinates[1] + 1 > 7))
                                     useLaser(player, coordinates[0], coordinates[1] + 1);
                                 break;
                             case LEFT:
@@ -232,7 +232,7 @@ public class GameController implements Initializable {
                     Player p2 = (Player) pawn;
                     coord = p2.getCoordinates();
                     if (PLAYER_COUNT == 2) {
-                        p2.setOrientation(p2.getOrientation().getRight().getRight());
+                        p2.setOrientation((p2.getOrientation().getRight().getRight()));
                         placePawn(p2, coord[0], coord[1]);
                     } else {
                         p2.returnStartPosition();
