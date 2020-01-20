@@ -188,7 +188,7 @@ public class GameController implements Initializable {
         Scene menuScene = new Scene(root);
 
         stage.setScene(menuScene);
-        //stage.setFullScreen(true);
+        stage.setFullScreen(true);
     }
 
     @FXML
@@ -206,7 +206,7 @@ public class GameController implements Initializable {
         Scene endScreenScene = new Scene(root, 1000, 600);
 
         stage.setScene(endScreenScene);
-        //stage.setFullScreen(true);
+        stage.setFullScreen(true);
     }
 
     private void hasPlay(boolean usedCard) {

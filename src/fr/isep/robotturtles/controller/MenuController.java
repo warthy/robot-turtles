@@ -48,6 +48,6 @@ public class MenuController {
         Scene gameScene = new Scene(root, 1000 , 600);
 
         stage.setScene(gameScene);
-        //stage.setFullScreen(true);
+        stage.setFullScreen(true);
     }
 }
