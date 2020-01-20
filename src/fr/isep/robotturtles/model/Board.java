@@ -13,6 +13,7 @@ public class Board {
 
     public Board(int playersCount) {
         PlayerColor[] colors = PlayerColor.values();
+        jewelMax = playersCount - 1;
         players = new Player[playersCount];
         switch (playersCount) {
             case 2:
@@ -59,7 +60,7 @@ public class Board {
         return true;
     }
 
-    public void removePawn(int row, int col){
+    public void removePawn(int row, int col) {
         grid[row][col] = null;
     }
 
@@ -67,18 +68,18 @@ public class Board {
         if ((grid[row][col] == null)
                 || (grid[row][col] != null && grid[row][col].getPawnType().equals(PawnType.JEWEL) && pawn.getPawnType().equals(PawnType.PLAYER))
                 || (pawn instanceof Obstacle && canPutObstacle(row, col, ((Obstacle) pawn).getType()))
-        ){
+        ) {
             grid[row][col] = pawn;
             return true;
         }
         return false;
     }
 
-    public Pawn[][] getGrid(){
+    public Pawn[][] getGrid() {
         return grid;
     }
 
-    public Pawn getGridElement(int row, int col){
+    public Pawn getGridElement(int row, int col) {
         return grid[row][col];
     }
 
@@ -90,7 +91,7 @@ public class Board {
         return jewelMax;
     }
 
-    public void setJewelMax(int jewelMax) {
-        this.jewelMax = jewelMax;
+    public void decreaseJewelMax() {
+        this.jewelMax--;
     }
 }

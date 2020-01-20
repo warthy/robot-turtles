@@ -17,7 +17,10 @@ public class Turn {
 
     public boolean next(){
         if(hasPlayed){
-            player = players.remove();
+            do {
+                player =  players.remove();
+            } while (player.getJewelPoint() != 0);
+
             players.add(player);
 
             hasPlayed = false;

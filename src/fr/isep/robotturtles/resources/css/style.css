@@ -89,21 +89,28 @@
     -fx-background-image: url("../images/card-laser.png");
 }
 
-#turtle-blue{
+.turtle-blue{
     -fx-background-image: url("../images/turtle-blue.png");
 }
-#turtle-orange{
+.turtle-orange{
     -fx-background-image: url("../images/turtle-orange.png");
 }
-#turtle-purple{
+.turtle-purple{
     -fx-background-image: url("../images/turtle-purple.png");
 }
-#turtle-red{
+.turtle-red{
     -fx-background-image: url("../images/turtle-red.png");
 }
 
 .stack{
     -fx-background-image: url("../images/stack-card.png");
+}
+
+.scoreline {
+    -fx-fill: white;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 20;
 }
 
 

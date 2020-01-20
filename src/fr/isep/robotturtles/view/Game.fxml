@@ -44,7 +44,7 @@
             <children>
                 <HBox alignment="BASELINE_CENTER" prefHeight="150.0" prefWidth="300.0" style="-fx-spacing: 10;">
                     <children>
-                        <Button mnemonicParsing="false" onAction="#leaveGame" prefHeight="50.0" prefWidth="400.0" styleClass="game-button" text="Menu">
+                        <Button mnemonicParsing="false" onAction="#switchToMenu" prefHeight="50.0" prefWidth="400.0" styleClass="game-button" text="Menu">
                             <cursor>
                                 <Cursor fx:constant="HAND" />
                             </cursor>
