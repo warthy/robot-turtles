@@ -25,6 +25,7 @@ import javafx.stage.Window;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 import static fr.isep.robotturtles.constants.ObstacleType.ICE;
 
@@ -42,7 +43,12 @@ public class GameController implements Initializable {
 
     static void initGame(int playerSize) {
         PLAYER_COUNT = playerSize;
-        board = new Board(playerSize);
+        try{
+            board = new Board(playerSize);
+        }catch (Exception e){
+            System.exit(0);
+        }
+
     }
 
     @Override
@@ -179,6 +185,11 @@ public class GameController implements Initializable {
     }
 
     @FXML
+    public void quit(Event e) {
+        System.exit(0);
+    }
+
+    @FXML
     public void switchToMenu(Event e) throws IOException {
         Scene game = grid.getScene();
         Window window = game.getWindow();
@@ -189,11 +200,6 @@ public class GameController implements Initializable {
 
         stage.setScene(menuScene);
         stage.setFullScreen(true);
-    }
-
-    @FXML
-    public void quit(Event e) {
-        System.exit(0);
     }
 
     private void switchToEndScreen() throws IOException {
@@ -217,6 +223,7 @@ public class GameController implements Initializable {
             displayDeck();
         }
     }
+
 
     private void useLaser(Player player, int row, int col) {
         Pawn pawn = board.getGridElement(row, col);
@@ -324,6 +331,8 @@ public class GameController implements Initializable {
             return false;
         }
     }
+
+
 
     private void displayDeck() {
         AnchorPane pane;
