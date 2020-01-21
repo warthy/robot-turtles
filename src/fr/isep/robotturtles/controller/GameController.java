@@ -225,6 +225,7 @@ public class GameController implements Initializable {
     }
 
 
+
     private void useLaser(Player player, int row, int col) {
         Pawn pawn = board.getGridElement(row, col);
         if(pawn == null) {
