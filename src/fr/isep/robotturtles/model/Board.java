@@ -100,14 +100,15 @@ public class Board {
         for (Player p : players) {
             boolean allow = false;
             for (Jewel j : jewels) {
-                boolean[][] visited = new boolean[BOARD_SIZE][BOARD_SIZE];
-                if(isPath(p.getRow(), p.getCol(), j, visited)){
+                if (isPath(p.getRow(), p.getCol(), j, new boolean[BOARD_SIZE][BOARD_SIZE]) &&
+                    isPath(Player.PLAYER_START_ROW, p.getStartCoordinate(), j, new boolean[BOARD_SIZE][BOARD_SIZE])
+                ) {
                     allow = true;
                     break;
                 }
             }
             //If one player can't reach any jewel, then refuse obstacle
-            if(!allow) {
+            if (!allow) {
                 grid[row][col] = null;
                 return false;
             }
