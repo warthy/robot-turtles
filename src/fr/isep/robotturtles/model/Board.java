@@ -74,11 +74,9 @@ public class Board {
     private boolean isNotStoneWall(Pawn p) {
         return !(p instanceof Obstacle) || ((Obstacle) p).getType() != ObstacleType.STONE;
     }
-
     private boolean isInsideGrid(int row, int col) {
         return row >= 0 && row < BOARD_SIZE && col >= 0 && col < BOARD_SIZE;
     }
-
     private boolean isPath(int row, int col, Jewel jewel, boolean[][] visited) {
         if (isInsideGrid(row, col) && isNotStoneWall(getGridElement(row, col)) && !visited[row][col]) {
             visited[row][col] = true;
@@ -92,8 +90,6 @@ public class Board {
         }
         return false;
     }
-
-
     private boolean canPutStoneWall(int row, int col, Obstacle obstacle) {
         // We put obstacle in the grid to see if it blocks a player's way
         grid[row][col] = obstacle;
@@ -121,10 +117,10 @@ public class Board {
         grid[row][col] = null;
     }
 
-
     public boolean setPawn(Pawn pawn, int row, int col) {
         if (grid[row][col] == null && (isNotStoneWall(pawn) || canPutStoneWall(row, col, (Obstacle) pawn))) {
             grid[row][col] = pawn;
+            pawn.setCoordinates(row, col);
             return true;
         }
         return false;

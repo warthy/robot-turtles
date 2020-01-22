@@ -258,19 +258,26 @@ public class GameController implements Initializable {
                         p2.setOrientation((p2.getOrientation().getRight().getRight()));
                         placePawn(p2, coord[0], coord[1]);
                     } else {
-                        p2.returnStartPosition();
-                        placePawn(null, coord[0], coord[1]);
-                        placePawn(p2, Player.PLAYER_START_ROW, p2.getStartCoordinate());
+                        resetPlayerPosition(p2);
                     }
                     break;
                 case JEWEL:
-                    coord = player.getCoordinates();
-                    player.returnStartPosition();
-                    placePawn(null, coord[0], coord[1]);
-                    placePawn(player, Player.PLAYER_START_ROW, player.getStartCoordinate());
+                    resetPlayerPosition(player);
                     break;
             }
         }
+    }
+
+    private void resetPlayerPosition(Player p){
+        //If there is another player on his spawn, then we put him back also on his spawn
+        Pawn pawnOnSpawn = board.getGridElement(Player.PLAYER_START_ROW, p.getStartCoordinate());
+        if(pawnOnSpawn instanceof Player){
+            resetPlayerPosition((Player) pawnOnSpawn);
+        }
+
+        p.returnStartPosition();
+        placePawn(null, p.getRow(), p.getCol());
+        placePawn(p, Player.PLAYER_START_ROW, p.getStartCoordinate());
     }
 
     private void movePlayer(Player player, int row, int col) {
@@ -281,7 +288,6 @@ public class GameController implements Initializable {
             if (pawn == null) {
                 placePawn(null, coord[0], coord[1]);
                 placePawn(player, row, col);
-                player.setCoordinates(row, col);
             } else {
                 switch (pawn.getPawnType()) {
                     case PLAYER:
@@ -312,10 +318,7 @@ public class GameController implements Initializable {
                 }
             }
         } catch (IndexOutOfBoundsException e) {
-            placePawn(null, coord[0], coord[1]);
-
-            player.returnStartPosition();
-            placePawn(player, Player.PLAYER_START_ROW, player.getStartCoordinate());
+            resetPlayerPosition(player);
         }
     }
 
