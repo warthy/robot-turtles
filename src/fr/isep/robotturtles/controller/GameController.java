@@ -209,7 +209,7 @@ public class GameController implements Initializable {
 
         EndScreenController.initEndScreen(board.getPlayers());
         Parent root = FXMLLoader.load(Main.class.getResource("view/EndScreen.fxml"));
-        Scene endScreenScene = new Scene(root, 1000, 600);
+        Scene endScreenScene = new Scene(root);
 
         stage.setScene(endScreenScene);
         stage.setFullScreen(true);
