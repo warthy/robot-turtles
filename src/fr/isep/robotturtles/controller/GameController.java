@@ -25,6 +25,7 @@ import javafx.stage.Window;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 import static fr.isep.robotturtles.constants.ObstacleType.ICE;
 
@@ -42,7 +43,12 @@ public class GameController implements Initializable {
 
     static void initGame(int playerSize) {
         PLAYER_COUNT = playerSize;
-        board = new Board(playerSize);
+        try{
+            board = new Board(playerSize);
+        }catch (Exception e){
+            System.exit(0);
+        }
+
     }
 
     @Override
@@ -122,10 +128,10 @@ public class GameController implements Initializable {
                         switch (orientation) {
                             case DOWN:
                                 if (!(coordinates[0] + 1 > 7))
-                                    useLaser(player, coordinates[0], coordinates[1] + 1);
+                                    useLaser(player, coordinates[0] + 1, coordinates[1]);
                                 break;
                             case RIGHT:
-                                if (!(coordinates[1] + 1 > 0))
+                                if (!(coordinates[1] + 1 > 7))
                                     useLaser(player, coordinates[0], coordinates[1] + 1);
                                 break;
                             case LEFT:
@@ -179,6 +185,11 @@ public class GameController implements Initializable {
     }
 
     @FXML
+    public void quit(Event e) {
+        System.exit(0);
+    }
+
+    @FXML
     public void switchToMenu(Event e) throws IOException {
         Scene game = grid.getScene();
         Window window = game.getWindow();
@@ -188,12 +199,7 @@ public class GameController implements Initializable {
         Scene menuScene = new Scene(root);
 
         stage.setScene(menuScene);
-        //stage.setFullScreen(true);
-    }
-
-    @FXML
-    public void quit(Event e) {
-        System.exit(0);
+        stage.setFullScreen(true);
     }
 
     private void switchToEndScreen() throws IOException {
@@ -203,10 +209,10 @@ public class GameController implements Initializable {
 
         EndScreenController.initEndScreen(board.getPlayers());
         Parent root = FXMLLoader.load(Main.class.getResource("view/EndScreen.fxml"));
-        Scene endScreenScene = new Scene(root, 1000, 600);
+        Scene endScreenScene = new Scene(root);
 
         stage.setScene(endScreenScene);
-        //stage.setFullScreen(true);
+        stage.setFullScreen(true);
     }
 
     private void hasPlay(boolean usedCard) {
@@ -218,9 +224,26 @@ public class GameController implements Initializable {
         }
     }
 
+
+
     private void useLaser(Player player, int row, int col) {
         Pawn pawn = board.getGridElement(row, col);
-        if(pawn != null) {
+        if(pawn == null) {
+            switch (player.getOrientation()){
+                case DOWN :
+                    if (!(row + 1 > 7)) useLaser(player, row + 1, col);
+                    break;
+                case RIGHT :
+                    if (!(col + 1 > 7)) useLaser(player, row, col + 1);
+                    break;
+                case LEFT :
+                    if (!(col - 1 < 0)) useLaser(player, row, col - 1);
+                    break;
+                case UP :
+                    if(!(row - 1 < 0)) useLaser(player, row - 1, col);
+                    break;
+            }
+        }else {
             PawnType pawntype = pawn.getPawnType();
             int[] coord;
             switch (pawntype) {
@@ -232,22 +255,29 @@ public class GameController implements Initializable {
                     Player p2 = (Player) pawn;
                     coord = p2.getCoordinates();
                     if (PLAYER_COUNT == 2) {
-                        p2.setOrientation(p2.getOrientation().getRight().getRight());
+                        p2.setOrientation((p2.getOrientation().getRight().getRight()));
                         placePawn(p2, coord[0], coord[1]);
                     } else {
-                        p2.returnStartPosition();
-                        placePawn(null, coord[0], coord[1]);
-                        placePawn(p2, Player.PLAYER_START_ROW, p2.getStartCoordinate());
+                        resetPlayerPosition(p2);
                     }
                     break;
                 case JEWEL:
-                    coord = player.getCoordinates();
-                    player.returnStartPosition();
-                    placePawn(null, coord[0], coord[1]);
-                    placePawn(player, Player.PLAYER_START_ROW, player.getStartCoordinate());
+                    resetPlayerPosition(player);
                     break;
             }
         }
+    }
+
+    private void resetPlayerPosition(Player p){
+        //If there is another player on his spawn, then we put him back also on his spawn
+        Pawn pawnOnSpawn = board.getGridElement(Player.PLAYER_START_ROW, p.getStartCoordinate());
+        if(pawnOnSpawn instanceof Player){
+            resetPlayerPosition((Player) pawnOnSpawn);
+        }
+
+        p.returnStartPosition();
+        placePawn(null, p.getRow(), p.getCol());
+        placePawn(p, Player.PLAYER_START_ROW, p.getStartCoordinate());
     }
 
     private void movePlayer(Player player, int row, int col) {
@@ -258,7 +288,6 @@ public class GameController implements Initializable {
             if (pawn == null) {
                 placePawn(null, coord[0], coord[1]);
                 placePawn(player, row, col);
-                player.setCoordinates(row, col);
             } else {
                 switch (pawn.getPawnType()) {
                     case PLAYER:
@@ -289,10 +318,7 @@ public class GameController implements Initializable {
                 }
             }
         } catch (IndexOutOfBoundsException e) {
-            placePawn(null, coord[0], coord[1]);
-
-            player.returnStartPosition();
-            placePawn(player, Player.PLAYER_START_ROW, player.getStartCoordinate());
+            resetPlayerPosition(player);
         }
     }
 
@@ -309,6 +335,8 @@ public class GameController implements Initializable {
             return false;
         }
     }
+
+
 
     private void displayDeck() {
         AnchorPane pane;

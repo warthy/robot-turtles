@@ -4,7 +4,7 @@ import fr.isep.robotturtles.constants.*;
 
 import java.util.*;
 
-public class Player implements Pawn, Comparable {
+public class Player extends Pawn implements Comparable {
     public static final int PLAYER_START_ROW = 7;
 
     private Card[] deck = new Card[5];
@@ -20,8 +20,7 @@ public class Player implements Pawn, Comparable {
 
     // We only keep col coordinate as row is constant (PLAYER_START_ROW)
     private int startCoordinate;
-    // [row, col]
-    private int[] coordinates = new int[2];
+
 
     public Player(PlayerColor color, int startCoordinate){
         this.color = color;
@@ -126,19 +125,6 @@ public class Player implements Pawn, Comparable {
         return startCoordinate;
     }
 
-    public PawnType getPawnType(){
-        return PawnType.PLAYER;
-    }
-
-    public int[] getCoordinates() {
-        return coordinates;
-    }
-
-    public void setCoordinates(int row, int col) {
-        this.coordinates[0] = row;
-        this.coordinates[1] = col;
-    }
-
     public int getJewelPoint() {
         return jewelPoint;
     }
@@ -147,6 +133,10 @@ public class Player implements Pawn, Comparable {
         this.jewelPoint = jewelPoint;
     }
 
+    @Override
+    public PawnType getPawnType(){
+        return PawnType.PLAYER;
+    }
 
     @Override
     public int compareTo(Object o) {
