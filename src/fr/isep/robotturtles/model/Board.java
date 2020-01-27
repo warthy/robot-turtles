@@ -1,6 +1,7 @@
 package fr.isep.robotturtles.model;
 
 import fr.isep.robotturtles.constants.ObstacleType;
+import fr.isep.robotturtles.constants.PawnType;
 import fr.isep.robotturtles.constants.PlayerColor;
 
 
@@ -74,34 +75,36 @@ public class Board {
     private boolean isNotStoneWall(Pawn p) {
         return !(p instanceof Obstacle) || ((Obstacle) p).getType() != ObstacleType.STONE;
     }
+
     private boolean isInsideGrid(int row, int col) {
         return row >= 0 && row < BOARD_SIZE && col >= 0 && col < BOARD_SIZE;
     }
-    private boolean isPath(int row, int col, Jewel jewel, boolean[][] visited) {
+
+    private boolean isJewel(int row, int col, boolean[][] visited) {
         if (isInsideGrid(row, col) && isNotStoneWall(getGridElement(row, col)) && !visited[row][col]) {
             visited[row][col] = true;
-            if (getGridElement(row, col) != null && getGridElement(row, col).equals(jewel)) return true;
+            if (getGridElement(row, col) != null && getGridElement(row, col).getPawnType() == PawnType.JEWEL)
+                return true;
 
             // check all 4 possible movements from current cell
             // and recur for each valid movement
             for (int i = 0; i < 4; i++) {
-                if (isPath(row + rows[i], col + cols[i], jewel, visited)) return true;
+                if (isJewel(row + rows[i], col + cols[i], visited)) return true;
             }
         }
         return false;
     }
+
     private boolean canPutStoneWall(int row, int col, Obstacle obstacle) {
         // We put obstacle in the grid to see if it blocks a player's way
         grid[row][col] = obstacle;
+
         for (Player p : players) {
             boolean allow = false;
-            for (Jewel j : jewels) {
-                if (isPath(p.getRow(), p.getCol(), j, new boolean[BOARD_SIZE][BOARD_SIZE]) &&
-                    isPath(Player.PLAYER_START_ROW, p.getStartCoordinate(), j, new boolean[BOARD_SIZE][BOARD_SIZE])
-                ) {
-                    allow = true;
-                    break;
-                }
+            if (isJewel(p.getRow(), p.getCol(), new boolean[BOARD_SIZE][BOARD_SIZE]) &&
+                    isJewel(Player.PLAYER_START_ROW, p.getStartCoordinate(), new boolean[BOARD_SIZE][BOARD_SIZE])
+            ) {
+                allow = true;
             }
             //If one player can't reach any jewel, then refuse obstacle
             if (!allow) {
