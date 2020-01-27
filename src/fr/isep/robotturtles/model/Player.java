@@ -1,7 +1,6 @@
 package fr.isep.robotturtles.model;
 
 import fr.isep.robotturtles.constants.*;
-
 import java.util.*;
 
 public class Player extends Pawn implements Comparable {

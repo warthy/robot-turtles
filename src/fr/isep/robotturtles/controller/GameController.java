@@ -25,7 +25,6 @@ import javafx.stage.Window;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.concurrent.TimeUnit;
 
 import static fr.isep.robotturtles.constants.ObstacleType.ICE;
 
@@ -275,9 +274,9 @@ public class GameController implements Initializable {
             resetPlayerPosition((Player) pawnOnSpawn);
         }
 
-        p.returnStartPosition();
         placePawn(null, p.getRow(), p.getCol());
-        placePawn(p, Player.PLAYER_START_ROW, p.getStartCoordinate());
+        p.returnStartPosition();
+        placePawn(p, p.getRow(), p.getCol());
     }
 
     private void movePlayer(Player player, int row, int col) {
